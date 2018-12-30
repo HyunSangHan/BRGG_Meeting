@@ -14,7 +14,7 @@ class CashPayment < ActiveRecord::Base
     belongs_to :user_female
 end
 
-class UsedHeart < ActiveRecord::Base
+class HeartPayment < ActiveRecord::Base
 	belongs_to :user_male
     belongs_to :user_female
 end
