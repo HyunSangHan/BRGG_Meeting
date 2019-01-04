@@ -18,8 +18,8 @@ end
 class User < ActiveRecord::Base
     belongs_to :company
     has_many :devices
-    has_many :cash_payments
-    has_many :heart_payments
+    has_one :cash_payment
+    has_one :heart_payment
     has_many :joined_users
 end
 

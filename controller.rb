@@ -26,6 +26,8 @@ require 'bcrypt'
 # make_chatingroom - ...
 # find_lost_password - ...
 
+
+############## HS ############## 
 get '/get_first_result' do
     user = Device.find_by_token(params["token"]).user
     joined_user = JoinedUser.new
@@ -55,13 +57,8 @@ get '/get_final_result' do
     end
 end
 
-# get '/get_cash_payment' do
-#     user = Device.find_by_token(params["token"]).user
-#     user.cash_payments.to_json
-# end
-
 post '/sign_up' do
-    if params["name"].nil?
+    if params["nickname"].nil?
         return "error_1_1".to_json # Enter Nickname
 
     elsif params["password"].nil?
@@ -113,8 +110,8 @@ post '/sign_up' do
     end
 
     user = User.new
-    user.company = Company.find(params["company_id"])
-    user.name = params["name"]
+    user.company = Company.find(params["company_name"]) #right?
+    user.nickname = params["nickname"]
     user.email = params["email"]
     user.phone_number = params["phone_number"]
     user.password = BCrypt::Password.create(params["password"])
