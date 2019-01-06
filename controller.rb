@@ -6,8 +6,8 @@ require 'bcrypt'
 # <get>
 # get_first_result - HS (Y)
 # get_final_result - HS (Y)
-# get_cash_payment - WJ
-# get_heart_payment - WJ
+# get_cash_payment - WJ (Y)
+# get_heart_payment - WJ (Y)
 # get_matching_result - SJ
 # get_my_info - SJ
 # get_cutline - SR
@@ -19,7 +19,7 @@ require 'bcrypt'
 # logout - HS (Y)
 # certify_company - ...
 # use_cash - WJ
-# use_heart - WJ
+# use_heart - WJ (WIP)
 # edit_my_info - SJ
 # make_ranking - SR
 # invite - SR
@@ -220,3 +220,47 @@ end
 #     # quick sort joined user by total_score
 #     # googling
 # end
+
+#####WJ########
+get '/get_cash_payment' do 
+    user = Device.find_by_token(params["token"]).user
+
+    user.cash_payments.to_json
+end
+
+
+get '/get_heart_payment' do 
+    user = Device.find_by_token(params["token"]).user
+
+    user.heart_payments.to_json
+end
+
+# WJchung
+post '/use_heart' do #error??
+    user = Device.find_by_token(params["token"]).user
+    joined_user = user.joined_user.find(params["user_id"])
+    joined_user = Joined_user.new
+
+    if joined_user.ranking == 1 #or is it '0'?
+        return "error".to_json #already first ranking and cannot upgrade
+    end
+
+    #check whether user used heart in time
+
+    #if heart is used add points accordingly
+    joined_user.total_score = joined_user.total_score + (heart_paid * 1000) #how much points is a heart worth??????
+    #new ranking??????
+    #deduct heart from original heart amount
+    user.current_heart = user.current_heart - heart_paid
+    #add heart useage for heartpayment
+    
+
+    upgrade.myanimal = myanimal
+    upgrade.growth_step = myanimal.growth_step
+   
+    joined_user.save
+    heart_payment.save
+    cash_payment.save
+    joined_user.to_json
+
+end
