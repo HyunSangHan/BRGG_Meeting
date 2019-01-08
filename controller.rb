@@ -28,7 +28,7 @@ require 'bcrypt'
 
 
 ############## HS ############## 
-get '/get_first_result' do
+post '/join' do
     user = Device.find_by_token(params["token"]).user
     joined_user = JoinedUser.new
 
@@ -37,7 +37,7 @@ get '/get_first_result' do
     else
         joined_user.user = user
         joined_user.total_score = 0 # must be added when making cutline
-        joined_user.ranking = joined_user_id # Is it right??
+        joined_user.ranking = joined_user_id + 1 # Is it right??
         joined.matching = false
         joined.meeting_date = params["meeting_date"] # Actually...I don't know how to take meeting_date!
         joined_user.save
@@ -46,7 +46,30 @@ get '/get_first_result' do
     end
 end
 
-get '/get_final_result' do
+post '/give_first_score' do
+    joined_user = joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
+    i = cutline # but....how to get cutline...?
+    STANDARD_SCORE = 100
+
+    while 0 < i # for winner
+        joined_user = joined_user.where("ranking" => i).take
+        joined_user.score = STANDARD_SCORE + (cutline - joined_user.ranking)*STANDARD_SCORE
+        joined_user.save
+        i -= 1
+    end
+
+    while i < cutline + STANDARD_SCORE # for loser
+        i += 1
+        joined_user = joined_user.where("ranking" => i).take
+        joined_user.score = STANDARD_SCORE - (joined_user.ranking - cutline)
+        if joined_user.score == 0
+            return false
+        end
+        joined_user.save
+    end
+end
+
+get '/get_ranking_result' do
     user = Device.find_by_token(params["token"]).user
     joined_user = user.joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
 
@@ -197,7 +220,7 @@ end
 #                 joined_male.current_raking = joined_male.id
 #                 joined_male.save
 #                 return joined_male.to_json
-#         else # female user smae with male
+#         else # female user same with male
 
 
 
