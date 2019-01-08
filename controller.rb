@@ -249,15 +249,35 @@ end
 get '/get_cash_payment' do 
     user = Device.find_by_token(params["token"]).user
 
-    user.cash_payments.to_json
+    return user.cash_payments.to_json
 end
 
 
 get '/get_heart_payment' do 
     user = Device.find_by_token(params["token"]).user
 
-    user.heart_payments.to_json
+    return user.heart_payments.to_json
 end
+
+
+###########################  HS's version about WJ's part(/use_cash)
+# post '/use_cash' do #done
+#     user = Device.find_by_token(params["token"]).user
+    
+#     CONST = 1
+
+#     cash_payment = CashPayment.new
+#     cash_payment.user = user
+#     cash_payment.cash = params["cash_payment"]
+#     cash_payment.heart = cash_payment.cash * CONST
+#     cash_payment.save
+
+#     user.current_heart = user.current_heart + cash_payment.heart
+#     user.save
+
+#     return cash_payment.to_json
+# end
+
 
 # WJchung
 post '/use_heart' do #error??
@@ -288,3 +308,25 @@ post '/use_heart' do #error??
     joined_user.to_json
 
 end
+
+
+###########################  HS's version about WJ's part(/use_heart)
+# post '/use_heart' do #done
+#     user = Device.find_by_token(params["token"]).user
+#     joined_user = user.joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
+#     total_score = joined_user.total_score
+
+#     heart_payment = HeartPayment.new
+#     heart_payment.user = user
+#     heart_payment.heart_paid = params["heart_payment"]
+
+#     total_score = total_score + heart_payment.heart_paid    
+
+#     user.current_heart = user.current_heart - heart_payment.heart_paid
+
+#     heart_payment.save
+#     user.save
+
+#     return heart_payment.to_json
+# end
+
