@@ -4,8 +4,8 @@ require 'bcrypt'
 
 # (Done: Y / Not yet: N / I don't know how to do: ...)
 # <get>
-# get_first_result - HS (Y)
-# get_final_result - HS (Y)
+# get_first_score - HS (Y)
+# get_ranking_result - HS (Y)
 # get_cash_payment - WJ (Y)
 # get_heart_payment - WJ (Y)
 # get_matching_result - SJ
@@ -13,6 +13,7 @@ require 'bcrypt'
 # get_cutline - SR
 
 # <post>
+# join - HS (Y)
 # sign_up - HS (Y)
 # secession - HS (Y)
 # sign_in - HS (Y)
