@@ -4,7 +4,6 @@ require 'bcrypt'
 
 # (Done: Y / Not yet: N / I don't know how to do: ...)
 # <get>
-# get_first_score - HS (Y)
 # get_ranking_result - HS (Y)
 # get_cash_payment - WJ (Y)
 # get_heart_payment - WJ (Y)
@@ -14,6 +13,7 @@ require 'bcrypt'
 
 # <post>
 # join - HS (Y)
+# assign_first_score - HS (Y)
 # sign_up - HS (Y)
 # secession - HS (Y)
 # sign_in - HS (Y)
@@ -47,7 +47,7 @@ post '/join' do
     end
 end
 
-post '/give_first_score' do
+post '/assign_first_score' do
     joined_user = joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
     i = cutline # but....how to get cutline...?
     STANDARD_SCORE = 100
