@@ -347,3 +347,25 @@ end
 #     return heart_payment.to_json
 # end
 
+get 'cutline' do
+count_m=0
+count_f=0
+array = JoinedUser.all
+array.each do |x|
+ if x.user.gender=="F"
+    count_f += 1
+ else
+    count_m += 1
+ end
+end
+
+
+puts "M명 : " +count_m.to_s
+puts "F명 : " +count_f.to_s
+    
+if count_m >= count_f
+    puts "커트라인 : " + count_f.to_s
+else
+    puts "커트라인 : " + count_m.to_s
+end
+end
