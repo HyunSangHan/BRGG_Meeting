@@ -27,10 +27,13 @@ require 'bcrypt'
 # make_chatingroom - ...
 # find_lost_password - ...
 
+STANDARD_SCORE = 100
+CASH_TO_HEART = 1
+HEART_TO_POINT = 1000
 
 ############## HS ############## 
 post '/join' do
-    user = Device.find_by_token(params["token"]).user
+    user = Device.find_by_token(params["token"]).user #in case of web change to session
     joined_user = JoinedUser.new
 
     if user.nil?
@@ -38,9 +41,10 @@ post '/join' do
     else
         joined_user.user = user
         joined_user.total_score = 0 # must be added when making cutline
-        joined_user.ranking = joined_user_id + 1 # Is it right??
+        joined_user.ranking = joined_user_id + 1 # Is it right?? separate male/female 
+        #add logic for when two users are exactly the same, infinite loop
         joined.matching = false
-        joined.meeting_date = params["meeting_date"] # Actually...I don't know how to take meeting_date!
+        joined.meeting_date = params["meeting_date"] # Actually...I don't know how to take meeting_date! -> fetch from meeting detail 
         joined_user.save
 
         return joined_user.ranking.to_json
@@ -50,9 +54,10 @@ end
 post '/assign_first_score' do
     joined_user = joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
     i = cutline # but....how to get cutline...?
-    STANDARD_SCORE = 100
 
     while 0 < i # for winner
+        #count = count + 1 
+        #break if count > 9999 
         joined_user = joined_user.where("ranking" => i).take
         joined_user.score = STANDARD_SCORE + (cutline - joined_user.ranking)*STANDARD_SCORE
         joined_user.save
@@ -62,7 +67,7 @@ post '/assign_first_score' do
     while i < cutline + STANDARD_SCORE # for loser
         i += 1
         joined_user = joined_user.where("ranking" => i).take
-        joined_user.score = STANDARD_SCORE - (joined_user.ranking - cutline)
+        joined_user.score = STANDARD_SCORE - (joined_user.ranking - cutline) #check if it's int or string
         if joined_user.score == 0
             return false
         end
@@ -72,10 +77,10 @@ end
 
 get '/get_ranking_result' do
     user = Device.find_by_token(params["token"]).user
-    joined_user = user.joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... Is it right?
+    joined_user = user.joined_user.where("meeting_date" => params["meeting_date"]).take # params meeting_date... fetch from meeting
 
     if joined_user.nil?
-        return "error_2".to_json
+        return "error_2".to_json # to_json -> redirect
     else
         return joined_user.ranking.to_json
     end
@@ -83,7 +88,7 @@ end
 
 post '/sign_up' do
     if params["nickname"].nil?
-        return "error_1_1".to_json # Enter Nickname
+        return "error_1_1".to_json # Enter Nickname  to_json -> redirect
 
     elsif params["password"].nil?
         return "error_1_2".to_json # Enter Password
@@ -145,8 +150,8 @@ post '/sign_up' do
     user.profile_img = params["profile_img"]
 
     while true
-        user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right?????
-        return User.where("recommendation_code" => user.recommendation_code).take.nil?
+        user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right????? -> OK
+        return User.where("recommendation_code" => user.recommendation_code).take.nil? 
     end
 
     user.gender = params["gender"]
@@ -165,11 +170,11 @@ post '/sign_in' do
     user = User.find_by_email(params["email"])
 
     if user.nil?
-        return "error_2_1".to_json
+        return "error_2_1".to_json #to_json -> redirect
     end
     
     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        return "error_2_2".to_json
+        return "error_2_2".to_json #to_json -> redirect
     end
 
     device = Device.new
@@ -179,7 +184,7 @@ post '/sign_in' do
     return device.to_json
 end
 
-post '/logout' do
+post '/logout' do #reset session
     Device.find_by_token(params["token"]).delete
     return true.to_json
 end
@@ -249,7 +254,7 @@ end
 get '/get_cash_payment' do 
     user = Device.find_by_token(params["token"]).user
 
-    return user.cash_payments.to_json
+    return user.cash_payments.to_json 
 end
 
 
@@ -264,12 +269,11 @@ end
 # post '/use_cash' do #done
 #     user = Device.find_by_token(params["token"]).user
     
-#     CONST = 1
-
+#     
 #     cash_payment = CashPayment.new
 #     cash_payment.user = user
 #     cash_payment.cash = params["cash_payment"]
-#     cash_payment.heart = cash_payment.cash * CONST
+#     cash_payment.heart = cash_payment.cash * CASH_TO_HEART 
 #     cash_payment.save
 
 #     user.current_heart = user.current_heart + cash_payment.heart
@@ -293,15 +297,13 @@ post '/use_heart' do #error??
 
     #check whether user used heart in time
 
-    #if heart is used add points accordingly
-    joined_user.total_score = joined_user.total_score + (heart_paid * RATE) #how much points is a heart worth??????
-    RATE = 1000
-    #new ranking??????
+    #if heart is used, add points accordingly
+    joined_user.total_score = joined_user.total_score + (heart_paid * HEART_TO_POINT) #how much points is a heart worth??????
+
     #deduct heart from original heart amount
     user.current_heart = user.current_heart - heart_paid
     #add heart useage for heartpayment
     
-
    
     joined_user.save
     heart_payment.save
@@ -391,25 +393,19 @@ end
 
 ################ SR part ##################
 
-get 'cutline' do
-count_m=0
-count_f=0
-array = JoinedUser.all
-array.each do |x|
- if x.user.gender=="F"
-    count_f += 1
- else
-    count_m += 1
- end
-end
-
-
-puts "M명 : " +count_m.to_s
-puts "F명 : " +count_f.to_s
+def get_cutline    
+    meeting = MeetingDetail.where("meeting_date > ?", Time.now)
+                            .where("starting_date < ?", Time.now).take
     
-if count_m >= count_f
-    puts "커트라인 : " + count_f.to_s
-else
-    puts "커트라인 : " + count_m.to_s
+
+    all_user = meeting.joined_users
+    
+    #all_user = JoinedUser.where(:meeting_detail_id = meeting.id)
+                          
+    female_count = all_user.where(:is_male => false).count
+    male_count = all_user.where(:is_male => true).count
+
+    cutline = [female_count, male_count].min
 end
-end
+
+#separate function file, reorg by web view
