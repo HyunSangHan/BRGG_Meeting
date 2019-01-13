@@ -347,6 +347,50 @@ end
 #     return heart_payment.to_json
 # end
 
+
+############## SJ's part(written by HS) ############## 
+get '/get_matching_result' do ###############have to
+    user = Device.find_by_token(params["token"]).user
+
+end
+
+get '/get_my_info' do
+    user = Device.find_by_token(params["token"]).user
+    return user.to_json
+end
+
+post '/edit_my_info' do
+    user = Device.find_by_token(params["token"]).user
+
+    if params["password"].nil?
+        return "error_1_2".to_json # Enter Password
+
+    elsif params["password_confirm"].nil?
+        return "error_1_3".to_json # Enter Password_confirm
+
+    if params["password"].length < 6
+        return "error_1_10".to_json # Password should be longer than 6 syllables
+    end
+
+    if params["password"] != params["password_confirm"]
+        return "error_1_11".to_json # Check the Password
+
+    elsif
+        user.company = Company.find(params["company_name"]) #right?
+        user.nickname = params["nickname"]
+        user.email = params["email"]
+        user.phone_number = params["phone_number"]
+        user.password = BCrypt::Password.create(params["password"])
+        user.location = params["location"]
+        user.team_detail = params["team_datail"]
+        user.profile_img = params["profile_img"]
+        return user.to_json
+    end
+end
+
+
+################ SR part ##################
+
 get 'cutline' do
 count_m=0
 count_f=0
