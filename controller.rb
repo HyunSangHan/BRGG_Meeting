@@ -282,8 +282,10 @@ end
 # WJchung
 post '/use_heart' do #error??
     user = Device.find_by_token(params["token"]).user
-    joined_user = user.joined_user.find(params["user_id"])
-    joined_user = Joined_user.new
+    joined_user = JoinedUser.New
+    joined_user.user_id = user_id
+    joined_user.total_score = total_score
+    joined_user.ranking =ranking
 
     if joined_user.ranking == 1 #or is it '0'?
         return "error".to_json #already first ranking and cannot upgrade
@@ -292,20 +294,35 @@ post '/use_heart' do #error??
     #check whether user used heart in time
 
     #if heart is used add points accordingly
-    joined_user.total_score = joined_user.total_score + (heart_paid * 1000) #how much points is a heart worth??????
+    joined_user.total_score = joined_user.total_score + (heart_paid * RATE) #how much points is a heart worth??????
+    RATE = 1000
     #new ranking??????
     #deduct heart from original heart amount
     user.current_heart = user.current_heart - heart_paid
     #add heart useage for heartpayment
     
 
-    upgrade.myanimal = myanimal
-    upgrade.growth_step = myanimal.growth_step
    
     joined_user.save
     heart_payment.save
-    cash_payment.save
+    user.save
     joined_user.to_json
+
+end
+
+post '/use_cash' do #error??
+    user = Device.find_by_token(params["token"]).user
+    
+        cash_payment = CashPayment.new
+        cash_payment.user = user
+        cash_payment.cash = params["cash_payment"]
+        cash_payment.heart = cash_payment.cash * CONST
+        cash_payment.save
+
+        user.save
+        cash_payment.save
+
+   
 
 end
 
