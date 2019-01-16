@@ -22,9 +22,7 @@ require 'bcrypt'
 # make_ranking + assign_first_score
 
 
-
-
-############## NOT YET ############## 
+############## NOT YET!!! ############## 
 def join(session)
     if user.nil?
         redirect '/'
