@@ -42,7 +42,6 @@ get '/get_cash_payment' do
     redirect '/'
 end
 
-
 get '/get_heart_payment' do 
     user = User.find(session["user_id"])
  #   return user.heart_payments.to_json
