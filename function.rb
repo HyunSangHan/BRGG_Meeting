@@ -4,13 +4,8 @@ require 'bcrypt'
 
 
 ####################
-# making (change to function)
+# I am still making code~~~~~~ (for changing get/post to function)
 ###################
-
-
-
-
-
 
 # <get>
 # get_ranking_result - HS (Y)
@@ -26,39 +21,31 @@ require 'bcrypt'
 
 # make_ranking + assign_first_score
 
-############## HS ############## 
-
-#####WJ########
-get '/get_cash_payment' do 
-    user = Device.find_by_token(params["token"]).user
-
-    return user.cash_payments.to_json 
-end
 
 
-get '/get_heart_payment' do 
-    user = Device.find_by_token(params["token"]).user
 
-    return user.heart_payments.to_json
-end
-
-
-post '/join' do
-    user = Device.find_by_token(params["token"]).user #in case of web change to session
-    joined_user = JoinedUser.new
-
+############## NOT YET ############## 
+def join(session)
     if user.nil?
-        return "error_1".to_json
+        redirect '/'
     else
+        joined_user = JoinedUser.new
+        meeting = MeetingDetail.where("meeting_date > ?", Time.now)
+                                  .where("starting_date < ?", Time.now).take    
         joined_user.user = user
         joined_user.total_score = 0 # must be added when making cutline
-        joined_user.ranking = joined_user_id + 1 # Is it right?? separate male/female 
-        #add logic for when two users are exactly the same, infinite loop
-        joined.matching = false
-        joined.meeting_date = params["meeting_date"] # Actually...I don't know how to take meeting_date! -> fetch from meeting detail 
-        joined_user.save
 
-        return joined_user.ranking.to_json
+        all_user = meeting.joined_users
+ 
+        female_count = all_user.where(:is_male => false).count
+        male_count = all_user.where(:is_male => true).count
+
+        joined_user.ranking = joined_user_id + 1 # Is it right?? separate male/female 
+        joined_user.midranking = joined_user_id + 1
+        #add logic for when two users are exactly the same, infinite loop
+        joined_user.meeting_detail_id = meeting
+        joined_user.is_deleted = false
+        joined_user.save
     end
 end
 
@@ -87,21 +74,22 @@ post '/assign_first_score' do
 end
 
 
-def get_ranking_result
+def get_ranking_result(session)
     meeting = MeetingDetail.where("meeting_date > ?", Time.now)
                             .where("starting_date < ?", Time.now).take
-    all_user = meeting.joined_users
-    ############################################
-    # have to add a logic for calculating raking
+    # meeting = MeetingDetail.first
+    meeting.joined_users.order("total_score DESC").each_with_index do |x,i|
+    x.ranking = i + 1
+    x.save
+    return meeting.joined_user.ranking #need check
+    #how about gender??????????????????????
+end
 
-    # JoinedUser.includes( :ranking ).order( 'joined_user.scores DESC' )
 end
 
 def get_cutline    
     meeting = MeetingDetail.where("meeting_date > ?", Time.now)
                             .where("starting_date < ?", Time.now).take
-    
-
     all_user = meeting.joined_users
     
     #doo2's comment ----> all_user = JoinedUser.where(:meeting_detail_id = meeting.id)
@@ -112,61 +100,25 @@ def get_cutline
     return cutline = [female_count, male_count].min
 end
 
-    
-post '/make_ranking' do
-    user = Device.find_by_token(params["token"]).user
+def use_heart(session)
+    meeting = MeetingDetail.where("meeting_date > ?", Time.now)
+                            .where("starting_date < ?", Time.now).take
+    all_user = meeting.joined_users
 
-    # <get user lists>
-    sametime_users = joined_users.where("meeting date" => params["meeting date"])
-    male_users = sametime_users.where("gender" => "male")
-    female_users = sametime_users.where("gender" => "female") # right syntax?
 
-    # <fix ranking by total_score>
+    total_score = all_user.total_score
 
-    # tmp = male_users.sort_by{|user_id, total_score, ranking, matching, timestamp, meeting_date|total_score}
-    # for i in tmp
-    #     tmp.ranking = i
-    # end
+    heart_payment = HeartPayment.new
+    heart_payment.user = user
+    heart_payment.heart_paid = params["heart_payment"]
 
-    # # user_id
-    # # total_score
-    # # ranking
-    # # matching (boolean)
-    # # meeting_date
-    
+    joined_user.total_score = joined_user.total_score + (heart_payment.heart_paid * HEART_TO_SCORE)
 
-    # <have to fix matching>
-    
-    # <make matched history(Class)>
+    user.current_heart = user.current_heart - heart_payment.heart_paid
 
-end
-
-post '/use_heart' do #error??
-    user = Device.find_by_token(params["token"]).user
-    joined_user = JoinedUser.New
-    joined_user.user_id = user_id
-    joined_user.total_score = total_score
-    joined_user.ranking =ranking
-
-    if joined_user.ranking == 1 #or is it '0'?
-        return "error".to_json #already first ranking and cannot upgrade
-    end
-
-    #check whether user used heart in time
-
-    #if heart is used, add points accordingly
-    joined_user.total_score = joined_user.total_score + (heart_paid * HEART_TO_SCORE) #how much points is a heart worth??????
-
-    #deduct heart from original heart amount
-    user.current_heart = user.current_heart - heart_paid
-    #add heart useage for heartpayment
-    
-   
-    joined_user.save
     heart_payment.save
     user.save
-    joined_user.to_json
-
+#     return heart_payment.to_json
 end
 
 ###########################  HS's version about WJ's part(/use_heart)

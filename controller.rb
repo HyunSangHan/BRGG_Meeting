@@ -3,6 +3,9 @@ require './db_class.rb'
 require './function.rb'
 require 'bcrypt'
 
+enable :sessions
+
+
 # (Done: Y / Not yet: N / I don't know how to do: ...)
 # <get>
 # get_ranking_result - HS (Y)
@@ -32,6 +35,19 @@ DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
 
+
+get '/get_cash_payment' do 
+    user = User.find(session["user_id"]
+#    return user.cash_payments.to_json 
+    redirect '/'
+end
+
+
+get '/get_heart_payment' do 
+    user = User.find(session["user_id"])
+ #   return user.heart_payments.to_json
+    redirect '/'
+end
 
 post '/sign_up' do
     if params["nickname"].nil?
@@ -132,17 +148,17 @@ post '/sign_in' do
 end
 
 post '/logout' do #reset session
-    Device.find_by_token(params["token"]).delete
-    return true.to_json
+    session.clear
+    redirect '/'
 end
 
 post '/secession' do
-    user = Device.find_by_token(params["token"]).user
+    user = User.find(session["user_id"])
     if user.password != params["password"] # No BCyrpt???
-        return "error_3".to_json
+        redirect '/error_3'
     else
         user.delete
-        return true.to_json 
+        redirect '/'
     end
 end
 
@@ -198,19 +214,17 @@ end
 # end
 
 
-############## SJ's part(written by HS) ############## 
-get '/get_matching_result' do ###############have to
-    user = Device.find_by_token(params["token"]).user
+get '/get_matching_result' do
+    user = User.find(session["user_id"])
 
 end
 
 get '/get_my_info' do
-    user = Device.find_by_token(params["token"]).user
-    return user.to_json
+    @user = User.find(session["user_id"])
 end
 
 post '/edit_my_info' do
-    user = Device.find_by_token(params["token"]).user
+    user = User.find(session["user_id"])
 
     if params["password"].nil?
         return "error_1_2".to_json # Enter Password
@@ -240,6 +254,6 @@ end
 
     
 post '/invite' do
-    user = Device.find_by_token(params["token"]).user
+    user = User.find(session["user_id"])
 
 end
