@@ -5,7 +5,7 @@ require 'bcrypt'
 
 ################################## function #####################################
 # join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
-# GET functions don't have a parameter(session)
+# <have to know it:> GET functions don't have a parameter(session)
 #################################################################################
 
 DEFAULT_SCORE_RATE = 100
