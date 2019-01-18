@@ -5,7 +5,6 @@ require 'bcrypt'
 
 enable :sessions
 
-
 # (Done: Y / Not yet: N / I don't know how to do: ...)
 # <get>
 # get_ranking_result - HS (Y)
@@ -30,11 +29,6 @@ enable :sessions
 # invite - SR
 # make_chatingroom - ...
 # find_lost_password - ...
-
-DEFAULT_SCORE_RATE = 100
-CASH_TO_HEART = 1
-HEART_TO_SCORE = 1000
-
 
 get '/get_cash_payment' do 
     user = User.find(session["user_id"]
