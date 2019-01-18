@@ -82,7 +82,7 @@ def assign_first_score(session)
 end
 
 
-def get_ranking_result(session)
+def get_ranking_result
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
     all_user = meeting.joined_users
@@ -118,22 +118,20 @@ end
 def use_heart(session)
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
-    all_user = meeting.joined_users
+    joined_user = meeting.joined_users.find(session["user_id"] #need check
 
-
-    total_score = all_user.total_score
+    total_score = joined_user.total_score
 
     heart_payment = HeartPayment.new
     heart_payment.user = user
     heart_payment.heart_paid = params["heart_payment"]
 
     joined_user.total_score = joined_user.total_score + (heart_payment.heart_paid * HEART_TO_SCORE)
-
     user.current_heart = user.current_heart - heart_payment.heart_paid
 
     heart_payment.save
     user.save
-#     return heart_payment.to_json
+    return heart_payment
 end
 
 post '/use_cash' do #done
