@@ -22,6 +22,11 @@ require 'bcrypt'
 # make_ranking + assign_first_score
 
 
+DEFAULT_SCORE_RATE = 100
+CASH_TO_HEART = 1
+HEART_TO_SCORE = 1000
+
+
 ############## NOT YET!!! ############## 
 def join(session)
     if user.nil?
@@ -134,10 +139,8 @@ def use_heart(session)
     return heart_payment
 end
 
-post '/use_cash' do #done
-    user = Device.find_by_token(params["token"]).user
-    
-    
+def use_cash(session)
+    #Already got session from controller
     cash_payment = CashPayment.new
     cash_payment.user = user
     cash_payment.cash = params["cash_payment"]
@@ -146,7 +149,6 @@ post '/use_cash' do #done
 
     user.current_heart = user.current_heart + cash_payment.heart
     user.save
-
-    return cash_payment.to_json
+    return cash_payment
 end
 
