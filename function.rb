@@ -1,33 +1,17 @@
 require 'sinatra'
 require './db_class.rb'
+require './controller.rb'
 require 'bcrypt'
 
-
-####################
-# I am still making code~~~~~~ (for changing get/post to function)
-###################
-
-# <get>
-# get_ranking_result - HS (Y)
-# get_cash_payment - WJ (Y)
-# get_heart_payment - WJ (Y)
-# get_cutline - SR
-
-# join
-# certify_company - ...
-
-# use_cash - WJ
-# use_heart - WJ (WIP)
-
-# make_ranking + assign_first_score
-
+################################## function #####################################
+# join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
+# GET functions don't have a parameter(session)
+#################################################################################
 
 DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
 
-
-############## NOT YET!!! ############## 
 def join(session)
     if user.nil?
         redirect '/'
@@ -151,4 +135,3 @@ def use_cash(session)
     user.save
     return cash_payment
 end
-
