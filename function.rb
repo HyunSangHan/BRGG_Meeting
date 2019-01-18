@@ -55,27 +55,29 @@ def assign_first_score(session)
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
     all_user = meeting.joined_users
+    cutline = meeting.cutline
 
-    i = meeting_detail.cutline
-##########여기하는중
+    i = cutline
     count = 0
     while 0 < i # for winner
         count = count + 1 
-        break if count > 9999 
+        break if count > 9999
         my = all_user.where("ranking" => i).take
         my.score = DEFAULT_SCORE_RATE + (cutline - my.ranking)*DEFAULT_SCORE_RATE
         my.save
         i -= 1
     end
 
+    i = cutline 
+    count = 0
     while i < cutline + DEFAULT_SCORE_RATE # for loser
+        count = count + 1 
+        break if count > 9999
         i += 1
-        my = joined_user.where("ranking" => i).take
+        my = all_user.where("ranking" => i).take
         my.score = DEFAULT_SCORE_RATE - (my.ranking - cutline) #check if it's int or string
-        if my.score == 0
-            return false
-        end
-        joinedmy_user.save
+        break if my.score == 0
+        my.save
     end
 end
 
