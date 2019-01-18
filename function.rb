@@ -2,10 +2,19 @@ require 'sinatra'
 require './db_class.rb'
 require 'bcrypt'
 
-################################## function #####################################
-# join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
-# <have to know it> I made 'check session' a justifed function!
-#################################################################################
+###################################################################################################
+
+# <NOTICE>: 'check session' is a justifed function!
+
+# [Function]
+# : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
+
+# [Controller]
+# : POST - sign_in_process, sign_up_process, edit_my_info_process, invite, find_lost_password
+# : GET - heart_payment, cash_payment, logout, secession, get_matching_result, get_my_info
+
+# and..... need to think more
+###################################################################################################
 
 DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1

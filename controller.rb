@@ -5,97 +5,101 @@ require 'bcrypt'
 
 enable :sessions
 
+###################################################################################################
 
-# <have to know it> 'check session' is a justifed function!
+# <NOTICE>: 'check session' is a justifed function!
 
+# [Function]
+# : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
 
-# (Done: Y / Not yet: N / I don't know how to do: ...)
-# <get>
-# get_ranking_result - HS (Y)
-# get_cash_payment - WJ (Y)
-# get_heart_payment - WJ (Y)
-# get_matching_result - SJ
-# get_my_info - SJ
-# get_cutline - SR
+# [Controller]
+# : POST - sign_in_process, sign_up_process, edit_my_info_process, invite, find_lost_password
+# : GET - heart_payment, cash_payment, logout, secession, get_matching_result, get_my_info
 
-# <post>
-# join - HS (Y)
-# assign_first_score - HS (Y)
-# sign_up - HS (Y)
-# secession - HS (Y)
-# sign_in - HS (Y)
-# logout - HS (Y)
-# certify_company - ...
-# use_cash - WJ
-# use_heart - WJ (WIP)
-# edit_my_info - SJ
-# make_ranking - SR
-# invite - SR
-# make_chatingroom - ...
-# find_lost_password - ...
+# and..... need to think more
+###################################################################################################
 
-get '/get_cash_payment' do 
+get '/' do 
+    if session["user_id"].nil?
+        redirect '/login'
+    else
+        check session
+    end
+  end
+  
+post '/sign_in_process' do
+    user = User.find_by_email(params["email"])
+
+    if user.nil?
+        redirect '/error_2_1'
+    end
+    
+    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
+        redirect '/error_2_2'
+    end
+
+    session["user_id"] = user.id
+    redirect "/"
+end
+
+get '/cash_payment' do 
     check session
-#    return user.cash_payments.to_json 
+    user.cash_payments 
     redirect '/'
 end
 
 get '/get_heart_payment' do 
     check session
- #   return user.heart_payments.to_json
+    user.cash_payments
     redirect '/'
 end
 
-post '/sign_up' do
-    if params["nickname"].nil?
-        return "error_1_1".to_json # Enter Nickname  to_json -> redirect
+post '/sign_up_process' do
+    if params["nickame"].nil?
+        redirect '/error1_1'
 
     elsif params["password"].nil?
-        return "error_1_2".to_json # Enter Password
+        redirect '/error1_2'
 
     elsif params["password_confirm"].nil?
-        return "error_1_3".to_json # Enter Password_confirm
-
+        redirect '/error1_3'
+        
     elsif params["email"].nil?
-        return "error_1_4".to_json # Enter Email
+        redirect '/error1_4' # Enter Email
     end
 
     if !User.where("name" => params["name"]).take.nil?
-        return "error_1_6".to_json # Nickname is in use. Enter another nickname.
+        redirect '/error1_5' # Nickname is in use. Enter another nickname.
     end
 
     if !User.where("email" => params["email"]).take.nil?
-        return "error_1_7".to_json # Email is in use. Enter another Email.
+        redirect '/error1_6' # Email is in use. Enter another Email.
     end
 
     if Company.where("name" => params["company_name"]).take.nil?
-        return "error_1_8".to_json # Invalid company name.
+        redirect '/error1_7' # Invalid company name.
     end
 
     if params["name"].length < 2
-        return "error_1_9".to_json # Nickname should be longer than 2 syllables
+        redirect '/error1_8' # Nickname should be longer than 2 syllables
     end
 
     if params["password"].length < 6
-        return "error_1_10".to_json # Password should be longer than 6 syllables
+        redirect '/error1_9' # Password should be longer than 6 syllables
     end
 
     if params["password"] != params["password_confirm"]
-        return "error_1_11".to_json # Check the Password
+        redirect '/error1_10' # Check the Password
     end
 
     if params["phone_number"].length < 10
-        return "error_1_12".to_json # Phone number should be longer than 10 numbers
+        redirect '/error1_11' # Phone number should be longer than 10 numbers
     end
 
     if !params["email"].include? "@" 
-        return "error_1_13" # Check Email address
+        redirect '/error1_12' # Check Email address
     elsif !params["email"].include? "."
-        return "error_1_14" # Check Email address
-    end
-
-    if !params["gender"] != "male" && !params["gender"] != "female" 
-        return "error_1_15" # Invalid gender
+        redirect '/error1_13' # Check Email address
     end
 
     user = User.new
@@ -111,37 +115,13 @@ post '/sign_up' do
 
     while true
         user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right????? -> OK
-        return User.where("recommendation_code" => user.recommendation_code).take.nil? 
+        break if User.where("recommendation_code" => user.recommendation_code).take.nil?
     end
 
-    user.gender = params["gender"]
-    user.created_at = Time.now
+    user.is_male = params["gender"]
     user.save
 
-    device = Device.new
-    device.user = user 
-    device.token = SecureRandom.uuid 
-    device.save
-
-    return device.to_json
-end
-
-post '/sign_in' do
-    user = User.find_by_email(params["email"])
-
-    if user.nil?
-        return "error_2_1".to_json #to_json -> redirect
-    end
-    
-    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        return "error_2_2".to_json #to_json -> redirect
-    end
-
-    device = Device.new
-    device.user = user
-    device.token = SecureRandom.uuid
-    device.save
-    return device.to_json
+    redirect '/'
 end
 
 post '/logout' do #reset session
@@ -151,7 +131,7 @@ end
 
 post '/secession' do
     check session
-    if user.password != params["password"] # No BCyrpt???
+    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
         redirect '/error_3'
     else
         user.delete
@@ -220,21 +200,21 @@ get '/get_my_info' do
     check session
 end
 
-post '/edit_my_info' do
+post '/edit_my_info_process' do
     check session
 
     if params["password"].nil?
-        return "error_1_2".to_json # Enter Password
+        redirect '/error1_2' # Enter Password
 
     elsif params["password_confirm"].nil?
-        return "error_1_3".to_json # Enter Password_confirm
+        redirect '/error1_3' # Enter Password_confirm
 
     if params["password"].length < 6
-        return "error_1_10".to_json # Password should be longer than 6 syllables
+        redirect '/error1_9' # Password should be longer than 6 syllables
     end
 
     if params["password"] != params["password_confirm"]
-        return "error_1_11".to_json # Check the Password
+        redirect '/error1_10' # Check the Password
 
     elsif
         user.company = Company.find(params["company_name"]) #right?
@@ -245,10 +225,11 @@ post '/edit_my_info' do
         user.location = params["location"]
         user.team_detail = params["team_datail"]
         user.profile_img = params["profile_img"]
-        return user.to_json
+        user.save
+
+        redirect '/'
     end
 end
-
     
 post '/invite' do
     check session
