@@ -85,14 +85,21 @@ end
 def get_ranking_result(session)
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
-    # meeting = MeetingDetail.first
-    meeting.joined_users.order("total_score DESC").each_with_index do |x,i|
-    x.ranking = i + 1
-    x.save
-    return meeting.joined_user.ranking #need check
-    #how about gender??????????????????????
-end
+    all_user = meeting.joined_users
+    male_user = all_user.where(:is_male => true)
+    female_user = all_user.where(:is_male => false)
 
+    male_user.order("total_score DESC").each_with_index do |xy,i|
+        xy.ranking = i + 1
+        xy.save
+    end
+
+    female_user.order("total_score DESC").each_with_index do |xx,j|
+        xx.ranking = j + 1
+        xx.save
+    end
+    
+    return meeting.joined_user.ranking #need check. need return?
 end
 
 def get_cutline    
