@@ -12,7 +12,7 @@ CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
 
 def check_session
-    user = User.find(session["user_id"]
+    user = User.find(session["user_id"])
 end
 
 def join
