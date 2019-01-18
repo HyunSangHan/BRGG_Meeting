@@ -5,6 +5,10 @@ require 'bcrypt'
 
 enable :sessions
 
+
+# <have to know it> 'check session' is a justifed function!
+
+
 # (Done: Y / Not yet: N / I don't know how to do: ...)
 # <get>
 # get_ranking_result - HS (Y)
@@ -31,13 +35,13 @@ enable :sessions
 # find_lost_password - ...
 
 get '/get_cash_payment' do 
-    user = User.find(session["user_id"]
+    check session
 #    return user.cash_payments.to_json 
     redirect '/'
 end
 
 get '/get_heart_payment' do 
-    user = User.find(session["user_id"])
+    check session
  #   return user.heart_payments.to_json
     redirect '/'
 end
@@ -146,7 +150,7 @@ post '/logout' do #reset session
 end
 
 post '/secession' do
-    user = User.find(session["user_id"])
+    check session
     if user.password != params["password"] # No BCyrpt???
         redirect '/error_3'
     else
@@ -208,16 +212,16 @@ end
 
 
 get '/get_matching_result' do
-    user = User.find(session["user_id"])
+    check session
 
 end
 
 get '/get_my_info' do
-    @user = User.find(session["user_id"])
+    check session
 end
 
 post '/edit_my_info' do
-    user = User.find(session["user_id"])
+    check session
 
     if params["password"].nil?
         return "error_1_2".to_json # Enter Password
@@ -247,6 +251,6 @@ end
 
     
 post '/invite' do
-    user = User.find(session["user_id"])
+    check session
 
 end

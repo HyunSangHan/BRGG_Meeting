@@ -1,18 +1,22 @@
 require 'sinatra'
 require './db_class.rb'
-require './controller.rb'
 require 'bcrypt'
 
 ################################## function #####################################
 # join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
-# <have to know it:> GET functions don't have a parameter(session)
+# <have to know it> I made 'check session' a justifed function!
 #################################################################################
 
 DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
 
-def join(session)
+def check_session
+    user = User.find(session["user_id"]
+end
+
+def join
+    check_session
     if user.nil?
         redirect '/'
     else
@@ -40,7 +44,8 @@ def join(session)
     end
 end
 
-def assign_first_score(session)
+def assign_first_score
+    check_session
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
     all_user = meeting.joined_users
@@ -104,7 +109,8 @@ def get_cutline
     return cutline = [female_count, male_count].min
 end
 
-def use_heart(session)
+def use_heart
+    check_session
     meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
                             .where("starting_date < ?", Time.now.to_datetime).take
     joined_user = meeting.joined_users.find(session["user_id"] #need check
@@ -123,8 +129,8 @@ def use_heart(session)
     return heart_payment
 end
 
-def use_cash(session)
-    #Already got session from controller
+def use_cash
+    check_session
     cash_payment = CashPayment.new
     cash_payment.user = user
     cash_payment.cash = params["cash_payment"]
