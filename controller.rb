@@ -1,5 +1,5 @@
 require 'sinatra'
-# require 'sinatra/activerecord'
+require 'sinatra/activerecord'
 require './db_class.rb'
 require 'bcrypt'
 
@@ -10,8 +10,6 @@ get '/' do
     redirect '/login'
   else
     @user = User.find(session["user_id"])
-    # find(#integer) like hash
-    # user id exist only, in session
     erb :initpage
   end
 end
@@ -64,4 +62,60 @@ post '/signup_process' do
         session["user_id"] = user.id
         redirect '/'
     end
+end
+
+get './make_meeting' do # make function
+    meeting = MeetingDetail.new
+    meeting.starting_date = 3.days.from_now
+    meeting.mid_date = 4.days.from_now
+    meeting.meeting_date = 5.days.from_now
+    meeting.location = "Seoul"
+    meeting.cutline = 1
+    meeting.save
+
+    joined_user = JoinedUser.new
+    joined_user.user_id = User.find(session["user_id"])
+    joined_user.meeting_detail_id = params["meeting_detail_id"]
+    joined_user.total_score = 0
+    joined_user.ranking = 0
+    joined_user.midranking = 0
+    joined_user.is_deleted = false
+    joined_user.save
+end
+
+post './main_page' do
+    @user = User.find(session["user_id"])
+    @meeting = MeetingDetail.last # TODO : Always meeting opend? check!!!
+    erb :mainpage
+
+    # TODO : Add function checking current time -> open/mid/end
+    # view -> checking realtime.
+    #         check mid ranking.
+end
+
+post './join_meeting' do 
+    user = User.find(session["user_id"])
+    meeting = MeetingDetail.find(params["meeting_detail_id"])
+    # add user      
+end
+
+get './make_ranking' do # make function
+    # calc ranking / cutline
+end
+
+get './use_heart' do # make function
+    # calc ranking / heart / cutline
+
+    erb :heartusing
+end
+
+get './matching' do
+    # when last time calc ranking
+    # udpate matched_history, meetingdetail
+end
+
+get './matched_success' do
+    erb :matchingsuccess
+
+    #view -> show matched people
 end
