@@ -13,10 +13,10 @@ enable :sessions
 # : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
 
 # [Controller]
-# : POST - sign_in_process, sign_up_process, edit_my_info_process, invite, find_lost_password
-# : GET - heart_payment, cash_payment, logout, secession, get_matching_result, get_my_info
+# : POST - login_process, sign_up_process, edit_my_info_process, invite, find_lost_password
+# : GET - login, sign_up, heart_payment, cash_payment, logout, secession, get_matching_result, get_my_info
 
-# and..... need to think more
+# and..... please think more
 ###################################################################################################
 
 get '/' do 
@@ -27,7 +27,7 @@ get '/' do
     end
   end
   
-post '/sign_in_process' do
+post '/login_process' do
     user = User.find_by_email(params["email"])
 
     if user.nil?
