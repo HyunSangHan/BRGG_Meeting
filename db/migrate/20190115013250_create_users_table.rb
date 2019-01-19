@@ -9,7 +9,7 @@ class CreateUsersTable < ActiveRecord::Migration[5.2]
       t.string :location
       t.string :profile_img
       t.string :recommendation_code
-      t.text team_detail #need check
+      t.text :team_detail #need check
       t.boolean :is_male
       t.timestamps
     end
