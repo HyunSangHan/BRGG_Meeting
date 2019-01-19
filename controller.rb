@@ -3,8 +3,6 @@ require './db_class.rb'
 require './function.rb'
 require 'bcrypt'
 
-enable :sessions
-
 ###################################################################################################
 
 # <NOTICE>: 'check session' is a justifed function!
