@@ -1,0 +1,22 @@
+<h1>회원 가입 페이지입니다</h2>
+<form action="/signup_process" method="post">
+<!--   	Company : <select onchange="company(this);">
+				  <option value="brgg">바로가기</option> 
+				  <option value="general">회사원</option>
+			  </select><br> -->
+	Nick Name : <input type="text" name="nickname"><br>
+	Email : <input type="text" name="email"><br>
+	password : <input type="password" name="password"><br>
+ 	password confirm : <input type="password" name="password_confirm"><br>
+	Phone Number : <input type="text" name="phone_number"><br>
+	Gender : <select name="gender">
+				<option value="male">남</option> 
+				<option value="female">여</option>
+			</select><br>
+	Location : <input type="text" name="location"><br>
+	Team Detail : <input type="text" name="team_detail"><br>
+	Recommendation Code : <input type="password" name="recommendation_code"><br>
+<!-- 	Profile : <img src="profileimg" width="100" height="200"> -->
+  <input type="submit" value="회원가입">
+</form>
+<a href="/login">로그인</a>

@@ -49,7 +49,6 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.integer "user_female_id"
     t.integer "user_male_id"
     t.integer "meeting_detail_id"
-    t.string "location"
   end
 
   create_table "meeting_details", force: :cascade do |t|
@@ -69,6 +68,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.string "location"
     t.string "profile_img"
     t.string "recommendation_code"
+    t.string "password"
     t.text "team_detail"
     t.boolean "is_male"
     t.datetime "created_at", null: false

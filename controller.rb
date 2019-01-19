@@ -1,235 +1,67 @@
 require 'sinatra'
+# require 'sinatra/activerecord'
 require './db_class.rb'
-require './function.rb'
 require 'bcrypt'
 
-###################################################################################################
-
-# <NOTICE>: 'check session' is a justifed function!
-
-# [Function]
-# : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
-
-# [Controller]
-# : POST - login_process, sign_up_process, edit_my_info_process, invite, find_lost_password
-# : GET - login, sign_up, heart_payment, cash_payment, logout, secession, get_matching_result, get_my_info
-
-# and..... please think more
-###################################################################################################
+enable :sessions
 
 get '/' do 
-    if session["user_id"].nil?
-        redirect '/login'
-    else
-        check session
-    end
+  if session["user_id"].nil?
+    redirect '/login'
+  else
+    @user = User.find(session["user_id"])
+    # find(#integer) like hash
+    # user id exist only, in session
+    erb :initpage
   end
-  
-post '/login_process' do
-    user = User.find_by_email(params["email"])
-
-    if user.nil?
-        redirect '/error_2_1'
-    end
-    
-    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        redirect '/error_2_2'
-    end
-
-    session["user_id"] = user.id
-    redirect "/"
 end
 
-get '/cash_payment' do 
-    check session
-    user.cash_payments 
-    redirect '/'
+get '/login' do
+  erb :login
 end
 
-get '/get_heart_payment' do 
-    check session
-    user.cash_payments
-    redirect '/'
+get '/signup' do 
+  erb :signup
 end
 
-post '/sign_up_process' do
-    if params["nickame"].nil?
-        redirect '/error1_1'
+get '/logout' do 
+  session.clear
+  redirect '/'
+end
 
-    elsif params["password"].nil?
-        redirect '/error1_2'
-
-    elsif params["password_confirm"].nil?
-        redirect '/error1_3'
-        
-    elsif params["email"].nil?
-        redirect '/error1_4' # Enter Email
+post '/login_process' do 
+    user = User.where("email" => params["email"]).first
+    if !user.nil? and user.password == params["password"] 
+        session["user_id"] = user.id
     end
+        redirect "/"
+end
 
-    if !User.where("name" => params["name"]).take.nil?
-        redirect '/error1_5' # Nickname is in use. Enter another nickname.
-    end
-
-    if !User.where("email" => params["email"]).take.nil?
-        redirect '/error1_6' # Email is in use. Enter another Email.
-    end
-
-    if Company.where("name" => params["company_name"]).take.nil?
-        redirect '/error1_7' # Invalid company name.
-    end
-
-    if params["name"].length < 2
-        redirect '/error1_8' # Nickname should be longer than 2 syllables
-    end
-
-    if params["password"].length < 6
-        redirect '/error1_9' # Password should be longer than 6 syllables
-    end
-
+post '/signup_process' do 
     if params["password"] != params["password_confirm"]
-        redirect '/error1_10' # Check the Password
-    end
-
-    if params["phone_number"].length < 10
-        redirect '/error1_11' # Phone number should be longer than 10 numbers
-    end
-
-    if !params["email"].include? "@" 
-        redirect '/error1_12' # Check Email address
-    elsif !params["email"].include? "."
-        redirect '/error1_13' # Check Email address
-    end
-
-    user = User.new
-    user.company = Company.find(params["company_name"]) #right?
-    user.nickname = params["nickname"]
-    user.email = params["email"]
-    user.phone_number = params["phone_number"]
-    user.password = BCrypt::Password.create(params["password"])
-    user.current_heart = 0
-    user.location = params["location"]
-    user.team_detail = params["team_datail"]
-    user.profile_img = params["profile_img"]
-
-    while true
-        user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right????? -> OK
-        break if User.where("recommendation_code" => user.recommendation_code).take.nil?
-    end
-
-    user.is_male = params["gender"]
-    user.save
-
-    redirect '/'
-end
-
-post '/logout' do #reset session
-    session.clear
-    redirect '/'
-end
-
-post '/secession' do
-    check session
-    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        redirect '/error_3'
+        redirect back
     else
-        user.delete
-        redirect '/'
-    end
-end
+        user = User.new
 
-# post '/make_new_meeting' do
-#     matching = Matching.new # matching db in server??
-#     joined_male = JoinedMaleUser.new
-#     joined_female = JoinedFemaleUser.new
-
-#     matching.meeting_date = getMeetingDate # It needs new function
-#     matching.joined_male = joined_male
-#     matching.joined_female = joined_female
-#     matching.save
-
-#     return matching.to_json
-# end
-
-# # it called when user clicked the meeting participating button
-# post '/add_user_to_meeting' do
-#     user = Device.find_by_token(params["token"]).user
-#     meeting = getCurrentMeeing # matching db in server?? find_by
-
-#     if inTime # It need to compare matching.meeting_date, getCurrentTime
-#         if user.gender == 'male'
-#             if matching.joined_male.nil?
-#                 return "error".to_json # It means meeting
-#             else
-#                 joined_male.user_id = user.user_id
-#                 joined_male.current_raking = joined_male.id
-#                 joined_male.save
-#                 return joined_male.to_json
-#         else # female user same with male
-
-
-
-
-#     else
-#         return "error" # It means user can't join the meeting
-# end
-
-# # it called when the first meeting set.
-# post '/make_joined_user_first_list' do
-#     joined_male = getJoinedMale # It needs new function
-#     joined_female = getJoinedFemale
-
-#     setCutline = min(joined_male.last.current_raking, joined_female.last.current_raking) # I think meeting db needs cutline for fast calc
-#     setjoinedUserDB # calc total score with cutline
-# end
-
-# # it called when each time to sorting user list
-# post '/sorting_joined_user_list' do
-#     # quick sort joined user by total_score
-#     # googling
-# end
-
-
-get '/get_matching_result' do
-    check session
-
-end
-
-get '/get_my_info' do
-    check session
-end
-
-post '/edit_my_info_process' do
-    check session
-
-    if params["password"].nil?
-        redirect '/error1_2' # Enter Password
-
-    elsif params["password_confirm"].nil?
-        redirect '/error1_3' # Enter Password_confirm
-
-    if params["password"].length < 6
-        redirect '/error1_9' # Password should be longer than 6 syllables
-    end
-
-    if params["password"] != params["password_confirm"]
-        redirect '/error1_10' # Check the Password
-
-    elsif
-        user.company = Company.find(params["company_name"]) #right?
+        user.company_id = 1
+        user.current_heart = 0
         user.nickname = params["nickname"]
         user.email = params["email"]
+        user.password = params["password"]
         user.phone_number = params["phone_number"]
-        user.password = BCrypt::Password.create(params["password"])
         user.location = params["location"]
-        user.team_detail = params["team_datail"]
-        user.profile_img = params["profile_img"]
+        # user.profile_img = params["profile_img"]
+        user.profile_img = "image_src_location"
+        user.team_detail = params["team_detail"]
+        user.recommendation_code = params["recommendation_code"]
+        if params["gender"] == "male"
+            user.is_male = true
+        else
+            user.is_male = false
+        end
         user.save
 
+        session["user_id"] = user.id
         redirect '/'
     end
-end
-    
-post '/invite' do
-    check session
-
 end
