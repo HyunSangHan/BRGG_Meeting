@@ -137,58 +137,6 @@ post '/secession' do
     end
 end
 
-# post '/make_new_meeting' do
-#     matching = Matching.new # matching db in server??
-#     joined_male = JoinedMaleUser.new
-#     joined_female = JoinedFemaleUser.new
-
-#     matching.meeting_date = getMeetingDate # It needs new function
-#     matching.joined_male = joined_male
-#     matching.joined_female = joined_female
-#     matching.save
-
-#     return matching.to_json
-# end
-
-# # it called when user clicked the meeting participating button
-# post '/add_user_to_meeting' do
-#     user = Device.find_by_token(params["token"]).user
-#     meeting = getCurrentMeeing # matching db in server?? find_by
-
-#     if inTime # It need to compare matching.meeting_date, getCurrentTime
-#         if user.gender == 'male'
-#             if matching.joined_male.nil?
-#                 return "error".to_json # It means meeting
-#             else
-#                 joined_male.user_id = user.user_id
-#                 joined_male.current_raking = joined_male.id
-#                 joined_male.save
-#                 return joined_male.to_json
-#         else # female user same with male
-
-
-
-
-#     else
-#         return "error" # It means user can't join the meeting
-# end
-
-# # it called when the first meeting set.
-# post '/make_joined_user_first_list' do
-#     joined_male = getJoinedMale # It needs new function
-#     joined_female = getJoinedFemale
-
-#     setCutline = min(joined_male.last.current_raking, joined_female.last.current_raking) # I think meeting db needs cutline for fast calc
-#     setjoinedUserDB # calc total score with cutline
-# end
-
-# # it called when each time to sorting user list
-# post '/sorting_joined_user_list' do
-#     # quick sort joined user by total_score
-#     # googling
-# end
-
-
 get '/get_matching_result' do
     check session
 
