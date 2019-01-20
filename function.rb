@@ -20,6 +20,7 @@ enable :sessions
 DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
+COUNT_LIMIT = 9999
 
 def check_session #need user.save?
     user = User.find(session["user_id"])
@@ -68,7 +69,7 @@ def assign_first_score
     count = 0
     while 0 < i # for winner
         count = count + 1 
-        break if count > 9999
+        break if count > COUNT_LIMIT
         my = all_user.where("ranking" => i).take
         my.score = DEFAULT_SCORE_RATE + (cutline - my.ranking)*DEFAULT_SCORE_RATE
         my.save
@@ -79,7 +80,7 @@ def assign_first_score
     count = 0
     while i < cutline + DEFAULT_SCORE_RATE # for loser
         count = count + 1 
-        break if count > 9999
+        break if count > COUNT_LIMIT
         i += 1
         my = all_user.where("ranking" => i).take
         my.score = DEFAULT_SCORE_RATE - (my.ranking - cutline) #check if it's int or string
@@ -123,7 +124,7 @@ end
 def use_heart
     check_session
     get_meeting_info
-    joined_user = meeting.joined_users.find(session["user_id"] #need check
+    joined_user = meeting.joined_users.find(session["user_id"]) #need check
 
     total_score = joined_user.total_score
 

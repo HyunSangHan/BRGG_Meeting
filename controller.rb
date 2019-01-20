@@ -18,166 +18,171 @@ require './function.rb'
 ###################################################################################################
 
 get '/' do 
-    if session["user_id"].nil?
-        redirect '/login'
+    if !session["user_id"].nil?
+        redirect '/main'
     else
-        check session
+        erb :initpage
     end
-  end
+end
+
+post '/main' do
+    puts "main"
+    # erb :main
+end
   
-post '/login_process' do
-    user = User.find_by_email(params["email"])
+# post '/login_process' do
+#     user = User.find_by_email(params["email"])
 
-    if user.nil?
-        redirect '/error_2_1'
-    end
+#     if user.nil?
+#         redirect '/error_2_1'
+#     end
     
-    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        redirect '/error_2_2'
-    end
+#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
+#         redirect '/error_2_2'
+#     end
 
-    session["user_id"] = user.id
-    redirect "/"
-end
+#     session["user_id"] = user.id
+#     redirect "/"
+# end
 
-get '/cash_payment' do 
-    check session
-    user.cash_payments 
-    redirect '/'
-end
+# get '/cash_payment' do 
+#     check session
+#     user.cash_payments 
+#     redirect '/'
+# end
 
-get '/get_heart_payment' do 
-    check session
-    user.cash_payments
-    redirect '/'
-end
+# get '/get_heart_payment' do 
+#     check session
+#     user.cash_payments
+#     redirect '/'
+# end
 
-post '/sign_up_process' do
-    if params["nickame"].nil?
-        redirect '/error1_1'
+# post '/sign_up_process' do
+#     if params["nickame"].nil?
+#         redirect '/error1_1'
 
-    elsif params["password"].nil?
-        redirect '/error1_2'
+#     elsif params["password"].nil?
+#         redirect '/error1_2'
 
-    elsif params["password_confirm"].nil?
-        redirect '/error1_3'
+#     elsif params["password_confirm"].nil?
+#         redirect '/error1_3'
         
-    elsif params["email"].nil?
-        redirect '/error1_4' # Enter Email
-    end
+#     elsif params["email"].nil?
+#         redirect '/error1_4' # Enter Email
+#     end
 
-    if !User.where("name" => params["name"]).take.nil?
-        redirect '/error1_5' # Nickname is in use. Enter another nickname.
-    end
+#     if !User.where("name" => params["name"]).take.nil?
+#         redirect '/error1_5' # Nickname is in use. Enter another nickname.
+#     end
 
-    if !User.where("email" => params["email"]).take.nil?
-        redirect '/error1_6' # Email is in use. Enter another Email.
-    end
+#     if !User.where("email" => params["email"]).take.nil?
+#         redirect '/error1_6' # Email is in use. Enter another Email.
+#     end
 
-    if Company.where("name" => params["company_name"]).take.nil?
-        redirect '/error1_7' # Invalid company name.
-    end
+#     if Company.where("name" => params["company_name"]).take.nil?
+#         redirect '/error1_7' # Invalid company name.
+#     end
 
-    if params["name"].length < 2
-        redirect '/error1_8' # Nickname should be longer than 2 syllables
-    end
+#     if params["name"].length < 2
+#         redirect '/error1_8' # Nickname should be longer than 2 syllables
+#     end
 
-    if params["password"].length < 6
-        redirect '/error1_9' # Password should be longer than 6 syllables
-    end
+#     if params["password"].length < 6
+#         redirect '/error1_9' # Password should be longer than 6 syllables
+#     end
 
-    if params["password"] != params["password_confirm"]
-        redirect '/error1_10' # Check the Password
-    end
+#     if params["password"] != params["password_confirm"]
+#         redirect '/error1_10' # Check the Password
+#     end
 
-    if params["phone_number"].length < 10
-        redirect '/error1_11' # Phone number should be longer than 10 numbers
-    end
+#     if params["phone_number"].length < 10
+#         redirect '/error1_11' # Phone number should be longer than 10 numbers
+#     end
 
-    if !params["email"].include? "@" 
-        redirect '/error1_12' # Check Email address
-    elsif !params["email"].include? "."
-        redirect '/error1_13' # Check Email address
-    end
+#     if !params["email"].include? "@" 
+#         redirect '/error1_12' # Check Email address
+#     elsif !params["email"].include? "."
+#         redirect '/error1_13' # Check Email address
+#     end
 
-    user = User.new
-    user.company = Company.find(params["company_name"]) #right?
-    user.nickname = params["nickname"]
-    user.email = params["email"]
-    user.phone_number = params["phone_number"]
-    user.password = BCrypt::Password.create(params["password"])
-    user.current_heart = 0
-    user.location = params["location"]
-    user.team_detail = params["team_datail"]
-    user.profile_img = params["profile_img"]
+#     user = User.new
+#     user.company = Company.find(params["company_name"]) #right?
+#     user.nickname = params["nickname"]
+#     user.email = params["email"]
+#     user.phone_number = params["phone_number"]
+#     user.password = BCrypt::Password.create(params["password"])
+#     user.current_heart = 0
+#     user.location = params["location"]
+#     user.team_detail = params["team_datail"]
+#     user.profile_img = params["profile_img"]
 
-    while true
-        user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right????? -> OK
-        break if User.where("recommendation_code" => user.recommendation_code).take.nil?
-    end
+#     while true
+#         user.recommendation_code = SecureRandom.hex(8) # hex(8) -> right????? -> OK
+#         break if User.where("recommendation_code" => user.recommendation_code).take.nil?
+#     end
 
-    user.is_male = params["gender"]
-    user.save
+#     user.is_male = params["gender"]
+#     user.save
 
-    redirect '/'
-end
+#     redirect '/'
+# end
 
-post '/logout' do #reset session
-    session.clear
-    redirect '/'
-end
+# post '/logout' do #reset session
+#     session.clear
+#     redirect '/'
+# end
 
-post '/secession' do
-    check session
-    if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-        redirect '/error_3'
-    else
-        user.delete
-        redirect '/'
-    end
-end
+# post '/secession' do
+#     check session
+#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
+#         redirect '/error_3'
+#     else
+#         user.delete
+#         redirect '/'
+#     end
+# end
 
-get '/get_matching_result' do
-    check session
+# get '/get_matching_result' do
+#     check session
 
-end
+# end
 
-get '/get_my_info' do
-    check session
-end
+# get '/get_my_info' do
+#     check session
+# end
 
-post '/edit_my_info_process' do
-    check session
+# post '/edit_my_info_process' do
+#     check session
 
-    if params["password"].nil?
-        redirect '/error1_2' # Enter Password
+#     if params["password"].nil?
+#         redirect '/error1_2' # Enter Password
 
-    elsif params["password_confirm"].nil?
-        redirect '/error1_3' # Enter Password_confirm
+#     elsif params["password_confirm"].nil?
+#         redirect '/error1_3' # Enter Password_confirm
 
-    if params["password"].length < 6
-        redirect '/error1_9' # Password should be longer than 6 syllables
-    end
+#     if params["password"].length < 6
+#         redirect '/error1_9' # Password should be longer than 6 syllables
+#     end
 
-    if params["password"] != params["password_confirm"]
-        redirect '/error1_10' # Check the Password
+#     if params["password"] != params["password_confirm"]
+#         redirect '/error1_10' # Check the Password
 
-    elsif
-        user.company = Company.find(params["company_name"]) #right?
-        user.nickname = params["nickname"]
-        user.email = params["email"]
-        user.phone_number = params["phone_number"]
-        user.password = BCrypt::Password.create(params["password"])
-        user.location = params["location"]
-        user.team_detail = params["team_datail"]
-        user.profile_img = params["profile_img"]
-        user.save
+#     elsif
+#         user.company = Company.find(params["company_name"]) #right?
+#         user.nickname = params["nickname"]
+#         user.email = params["email"]
+#         user.phone_number = params["phone_number"]
+#         user.password = BCrypt::Password.create(params["password"])
+#         user.location = params["location"]
+#         user.team_detail = params["team_datail"]
+#         user.profile_img = params["profile_img"]
+#         user.save
 
-        redirect '/'
-    end
-end
+#         redirect '/'
+#     end
+# end
     
-post '/invite' do
-    check session
+# post '/invite' do
+#     check_session
 
-end
+# end
