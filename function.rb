@@ -1,6 +1,6 @@
 require 'sinatra'
-require './db_class.rb'
 require 'bcrypt'
+require './db_class.rb'
 enable :sessions
 
 ###################################################################################################
@@ -8,7 +8,7 @@ enable :sessions
 # <NOTICE>: 'check session' is a justifed function!
 
 # [Function]
-# : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
+# : check_session, get_meeting_info, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
 
 # [Controller]
 # : POST - login_process, sign_up_process, edit_my_info_process, invite, find_lost_password
@@ -21,18 +21,22 @@ DEFAULT_SCORE_RATE = 100
 CASH_TO_HEART = 1
 HEART_TO_SCORE = 1000
 
-def check_session
+def check_session #need user.save?
     user = User.find(session["user_id"])
+end
+
+def get_meeting_info
+    meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
+                              .where("starting_date < ?", Time.now.to_datetime).take
 end
 
 def join
     check_session
+    get_meeting_info
     if user.nil?
         redirect '/'
     else
-        joined_user = JoinedUser.new
-        meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                                  .where("starting_date < ?", Time.now.to_datetime).take    
+        joined_user = JoinedUser.new    
         joined_user.user = user
         joined_user.total_score = 0 # must be added when making cutline
         joined_user.meeting_detail_id = meeting
@@ -56,8 +60,7 @@ end
 
 def assign_first_score
     check_session
-    meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                            .where("starting_date < ?", Time.now.to_datetime).take
+    get_meeting_info
     all_user = meeting.joined_users
     cutline = meeting.cutline
 
@@ -87,8 +90,7 @@ end
 
 
 def get_ranking_result
-    meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                            .where("starting_date < ?", Time.now.to_datetime).take
+    get_meeting_info
     all_user = meeting.joined_users
     male_user = all_user.where(:is_male => true)
     female_user = all_user.where(:is_male => false)
@@ -107,8 +109,7 @@ def get_ranking_result
 end
 
 def get_cutline    
-    meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                            .where("starting_date < ?", Time.now.to_datetime).take
+    get_meeting_info
     all_user = meeting.joined_users
     
     #doo2's comment ----> all_user = JoinedUser.where(:meeting_detail_id = meeting.id)
@@ -121,8 +122,7 @@ end
 
 def use_heart
     check_session
-    meeting = MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                            .where("starting_date < ?", Time.now.to_datetime).take
+    get_meeting_info
     joined_user = meeting.joined_users.find(session["user_id"] #need check
 
     total_score = joined_user.total_score

@@ -4,6 +4,7 @@ class CreateUsersTable < ActiveRecord::Migration[5.2]
       t.integer :company_id
       t.integer :current_heart
       t.string :nickname
+      t.string :password
       t.string :email
       t.string :phone_number
       t.string :location

@@ -4,7 +4,6 @@ class CreateMatchedHistoriesTable < ActiveRecord::Migration[5.2]
       t.integer :user_female_id
       t.integer :user_male_id
       t.integer :meeting_detail_id
-      t.string :location
     end
   end
 end

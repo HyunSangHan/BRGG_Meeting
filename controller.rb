@@ -1,14 +1,14 @@
 require 'sinatra'
+require 'bcrypt'
 require './db_class.rb'
 require './function.rb'
-require 'bcrypt'
 
 ###################################################################################################
 
 # <NOTICE>: 'check session' is a justifed function!
 
 # [Function]
-# : check_session, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
+# : check_session, get_meeting_info, join, assign_first_score, get_ranking_result, get_cutline, use_heart, use_cash
 
 # [Controller]
 # : POST - login_process, sign_up_process, edit_my_info_process, invite, find_lost_password
