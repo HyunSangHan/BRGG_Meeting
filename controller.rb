@@ -19,6 +19,7 @@ get '/login' do
 end
 
 get '/signup' do 
+  @aaaaa = "Hello"
   erb :signup
 end
 
