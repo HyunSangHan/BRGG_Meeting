@@ -2,7 +2,6 @@ require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
 require './function.rb'
-require './seeds.rb'
 
 ###################################################################################################
 
