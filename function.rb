@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
+require './seed.rb'
 enable :sessions
 
 ###################################################################################################
