@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
-require './seed.rb'
+require './seeds.rb'
 enable :sessions
 
 ###################################################################################################
@@ -28,8 +28,8 @@ def check_session
 end
 
 def get_meeting_info
-    MeetingDetail.where("meeting_date > ?", Time.now.to_datetime)
-                  .where("starting_date < ?", Time.now.to_datetime).take
+    MeetingDetail.where("meeting_date > ?", Time.now().to_datetime)
+                  .where("starting_date < ?", Time.now().to_datetime).take
 end
 
 def join_clicked

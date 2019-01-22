@@ -2,7 +2,7 @@ require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
 require './function.rb'
-require './seed.rb'
+require './seeds.rb'
 
 ###################################################################################################
 
@@ -19,6 +19,7 @@ require './seed.rb'
 ###################################################################################################
 
 get '/' do 
+
     if !session["user_id"].nil?
         redirect '/main'
     else
@@ -26,11 +27,46 @@ get '/' do
     end
 end
 
-post '/main' do
+get '/main' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
     puts "main"
     # erb :main
+    end
 end
   
+get '/get_matching_result' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
+    puts "matching result"
+    # erb :matching_result
+    end
+end
+
+get '/delete/:user_id' do 
+    user = User.find(session["user_id"])
+    user.delete
+    redirect '/'
+  end
+  
+post '/logout' do #reset session
+    session.clear
+    redirect '/'
+end
+
+# post '/secession' do
+#     check session
+#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
+#         redirect '/error_3'
+#     else
+#         user.delete
+#         redirect '/'
+#     end
+# end
+  
+
 # post '/login_process' do
 #     user = User.find_by_email(params["email"])
 
@@ -128,20 +164,7 @@ end
 #     redirect '/'
 # end
 
-# post '/logout' do #reset session
-#     session.clear
-#     redirect '/'
-# end
 
-# post '/secession' do
-#     check session
-#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-#         redirect '/error_3'
-#     else
-#         user.delete
-#         redirect '/'
-#     end
-# end
 
 # get '/get_matching_result' do
 #     check session
