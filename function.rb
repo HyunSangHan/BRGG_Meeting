@@ -146,11 +146,10 @@ def use_cash cash_payment_params
     cash_payment = CashPayment.new
     cash_payment.user = user
     cash_payment.cash_paid = cash_payment_params
-    cash_payment.heart_gotten = cash_payment.cash * CASH_TO_HEART 
+    cash_payment.heart_gotten = cash_payment.cash_paid * CASH_TO_HEART 
     cash_payment.save
 
     user.current_heart = user.current_heart + cash_payment.heart_gotten
-    user.current_cash = user.current_cash - cash_payment.cash_paid
     user.save
     return cash_payment
 end
