@@ -19,7 +19,6 @@ require './db_class.rb'
 ###################################################################################################
 
 get '/' do 
-
     if !session["user_id"].nil?
         redirect '/main'
     else
@@ -51,9 +50,18 @@ get '/delete/:user_id' do
     redirect '/'
   end
   
-post '/logout' do #reset session
+post '/logout' do
     session.clear
     redirect '/'
+end
+
+post '/profile' do
+end
+
+post '/buy_heart' do
+end
+
+post '/chats' do
 end
 
 # post '/secession' do
