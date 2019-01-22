@@ -2,7 +2,7 @@ require 'securerandom'
 require 'bcrypt'
 require './db_class.rb'
 
-meeting_detail = Meeting_detail.create("starting_date"=>Time.now, "mid_date"=>Time.now, "meeting_date"=>Time.now, \
+meeting_detail = Meeting_detail.create("starting_date"=>Time.now(), "mid_date"=>Time.now(), "meeting_date"=>Time.now(), \
 "location"=>"Gangnam", "cutline"=>"0")
 # I don't know exactly.... about datetime....
 
