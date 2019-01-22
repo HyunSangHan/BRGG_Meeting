@@ -7,7 +7,7 @@ class CreateJoinedUsersTable < ActiveRecord::Migration[5.2]
       t.integer :ranking
       t.integer :midranking
       t.boolean :is_deleted
-      t.timestamps
+      t.datetime :created_at
     end
   end
 end

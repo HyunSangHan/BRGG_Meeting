@@ -6,7 +6,7 @@ class CreateCashPaymentsTable < ActiveRecord::Migration[5.2]
       t.integer :heart_gotten
       t.string :device_platform
       t.string :iap_token
-      t.timestamps
+      t.datetime :updated_at
     end
   end
 end

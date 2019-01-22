@@ -3,7 +3,7 @@ class CreateHeartPaymentsTable < ActiveRecord::Migration[5.2]
     create_table :heart_payments do |t|
       t.integer :user_id
       t.integer :heart_paid
-      t.timestamps
+      t.datetime :updated_at
     end
   end
 end

@@ -12,7 +12,7 @@ class CreateUsersTable < ActiveRecord::Migration[5.2]
       t.string :recommendation_code
       t.text :team_detail #need check
       t.boolean :is_male
-      t.timestamps
+      t.datetime :created_at
     end
   end
 end
