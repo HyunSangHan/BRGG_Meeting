@@ -2,7 +2,7 @@
 # require 'bcrypt'
 # require './db_class.rb'
 
-# meeting_detail = Meeting_detail.create("starting_date"=>Time.now(), "mid_date"=>Time.now(), "meeting_date"=>Time.now(), \
+# meeting_detail = Meeting_detail.create("starting_date"=>TDataTime.new(2019,1,2,4,5,6), "mid_date"=>DataTime.new(2019,1,3,4,5,6), "meeting_date"=>DataTime.new(2019,1,25,4,5,6), \
 # "location"=>"Gangnam", "cutline"=>"0")
 # # I don't know exactly.... about datetime....
 

@@ -27,28 +27,26 @@ get '/' do
 end
 
 get '/main' do
-    if session["user_id"].nil?
-        redirect '/'
-    else
-    puts "main"
-    # erb :main
-    end
+    # if session["user_id"].nil?
+    #     redirect '/'
+    # else
+     erb :main
+    # end
 end
   
-get '/get_matching_result' do
-    if session["user_id"].nil?
-        redirect '/'
-    else
-    puts "matching result"
-    # erb :matching_result
-    end
+get '/matching_result' do
+    # if session["user_id"].nil?
+    #     redirect '/'
+    # else
+     erb :matching_result
+    # end
 end
 
 get '/delete/:user_id' do 
     user = User.find(session["user_id"])
     user.delete
     redirect '/'
-  end
+end
   
 post '/logout' do
     session.clear
