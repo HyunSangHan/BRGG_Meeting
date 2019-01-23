@@ -55,21 +55,9 @@ post '/logout' do
     redirect '/'
 end
 
-post '/profile' do
+#post '/profile' do
+    #end
     
-    @user = User.find(session["user_id"])
-    @user.company = Company.find(params["company_name"]) #right?
-    @user.nickname = params["nickname"]
-    @user.email = params["email"]
-    @user.phone_number = params["phone_number"]
-    @user.password = BCrypt::Password.create(params["password"])
-    @user.location = params["location"]
-    @user.team_detail = params["team_datail"]
-    @user.profile_img = params["profile_img"]
-    user.save
-    erb :profile
-    end
-end
 
 post '/buy_heart' do
 end
