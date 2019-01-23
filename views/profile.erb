@@ -1,0 +1,44 @@
+<%= erb :"/layouts/header" %>
+
+	<!-- settings -->
+	<div class="segments-page">
+		<div class="container">
+			<div class="settings">
+				<div class="pages-title">
+					<h3>MY PROFILE</h3>
+					<div class="line"></div>
+				</div>
+				<form>
+					<div class="profile-banner">
+						<span>Photo</span>
+						<div class="contents">
+							<img src="images/bg-banner.jpg" alt="">
+							<input type="file">
+						</div>
+					</div>
+					<input type="text" value="이메일">
+					<input type="text" value="핸드폰 번호">
+					<input type="text" value="암호">
+					<input type="text" value="암호확인">
+					<input type="text" value="이름">
+					<input type="text" value="회사">
+					<input type="text" value="지역">
+					<input type="text" value="보유 하트">
+					<input type="text" value="추천인 코드">
+					<textarea cols="30" rows="10">미팅 그룹 소개</textarea>
+					<button class="button">저장하기</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- end settings -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/materialize.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/main.js"></script>
+
+</body>
+</html>
+
+<%= erb :"/layouts/footer" %>

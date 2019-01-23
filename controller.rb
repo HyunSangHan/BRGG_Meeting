@@ -56,6 +56,11 @@ post '/logout' do
 end
 
 post '/profile' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
+        erb :profile
+    end
 end
 
 post '/buy_heart' do
