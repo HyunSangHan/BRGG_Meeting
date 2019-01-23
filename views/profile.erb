@@ -1,6 +1,7 @@
 <%= erb :"/layouts/header" %>
 
 	<!-- settings -->
+<body>
 	<div class="segments-page">
 		<div class="container">
 			<div class="settings">
@@ -16,8 +17,7 @@
 							<input type="file">
 						</div>
 					</div>
-					<input type="text" value="이메일">
-					<input type="text" value="핸드폰 번호">
+					<input type="text" value="@user.email">
 					<input type="text" value="암호">
 					<input type="text" value="암호확인">
 					<input type="text" value="이름">
@@ -39,6 +39,5 @@
 	<script src="js/main.js"></script>
 
 </body>
-</html>
 
 <%= erb :"/layouts/footer" %>
