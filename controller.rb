@@ -26,6 +26,17 @@ get '/' do
     end
 end
 
+get '/sign_in' do
+end
+
+get '/sign_up' do
+end
+
+post '/sign_out' do
+    session.clear
+    redirect '/'
+end
+
 get '/main' do
     # if session["user_id"].nil?
     #     redirect '/'
@@ -47,22 +58,16 @@ get '/delete/:user_id' do
     user.delete
     redirect '/'
 end
-  
-post '/logout' do
-    session.clear
-    redirect '/'
-end
 
 get '/profile' do
     if session["user_id"].nil?
         redirect '/'
     else
-    @user = User.find(session["user_id"])
-    erb :profile
+        @user = User.find(session["user_id"])
+        erb :profile
     end
 end
     
-
 post '/buy_heart' do
 end
 
