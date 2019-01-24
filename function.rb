@@ -60,7 +60,6 @@ def join_clicked
 end
 
 def assign_first_score # MUST check if all cases are included
-#    user = check_session
     meeting = get_meeting_info
     all_users = meeting.joined_users
     cutline = meeting.cutline
@@ -89,19 +88,18 @@ def assign_first_score # MUST check if all cases are included
     end
 end
 
-
 def get_ranking_result
     meeting =  get_meeting_info
     all_users = meeting.joined_users
-    male_user = all_users.where(:is_male => true)
-    female_user = all_users.where(:is_male => false)
+    male_users = all_users.where(:is_male => true)
+    female_users = all_users.where(:is_male => false)
 
-    male_user.order("total_score DESC").each_with_index do |xy, i|
+    male_users.order("total_score DESC").each_with_index do |xy, i|
         xy.ranking = i + 1
         xy.save
     end
 
-    female_user.order("total_score DESC").each_with_index do |xx, j|
+    female_users.order("total_score DESC").each_with_index do |xx, j|
         xx.ranking = j + 1
         xx.save
     end
@@ -112,13 +110,17 @@ end
 def get_cutline    
     meeting = get_meeting_info
     all_users = meeting.joined_users
-    
     #doo2's comment ----> all_users = JoinedUser.where(:meeting_detail_id = meeting.id)
                           
     female_count = all_users.where(:is_male => false).count
     male_count = all_users.where(:is_male => true).count
+    puts female_count
+    puts male_count
+    cutline = [female_count, male_count].min
+    meeting.cutline = cutline
+    meeting.save
 
-    return cutline = [female_count, male_count].min
+    return cutline
 end
 
 def use_heart heart_payment_params
