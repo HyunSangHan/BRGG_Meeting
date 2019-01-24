@@ -5,11 +5,6 @@
 	<!-- about -->
 	<div class="segments-page">
 		<div class="container">
-			<div class="about">	
-				<div class="content">
-					<img src="/images/heart.png" alt="">
-				</div>
-			</div>
 			<!-- sign in -->
 			<div class="sign-in segments-page">
 				<div class="container">
@@ -18,19 +13,17 @@
 							<h3>Sign In</h3>
 							<div class="line"></div>
 						</div>
-						<form action="/signin_process" method="post">
-							<input type="email" placeholder="Email">
-							<input type="password" placeholder="password">
-							<div class="social-login">
-								<div class="row">
-									<div class="col s3"></div>
-									<div class="col s6">
-										<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign in</button>
-									</div>
-									<div class="col s3"></div>
-								</div>
+						<div class="row">
+							<div class="col s3"></div>
+							<div class="col s6">
+								<form action="/signin_process" method="post">
+									<input type="email" placeholder="Email">
+									<input type="password" placeholder="password">
+									<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign in</button>
+								</form>
 							</div>
-						</form>
+							<div class="col s3"></div>
+						</div>
 					</div>
 				</div>
 			</div>
