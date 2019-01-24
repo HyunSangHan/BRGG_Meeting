@@ -18,19 +18,19 @@
 							<h3>Sign In</h3>
 							<div class="line"></div>
 						</div>
-						<form>
+						<form action="/signin_process" method="post">
 							<input type="email" placeholder="Email">
 							<input type="password" placeholder="password">
-						</form>
-						<div class="social-login">
-							<div class="row">
-								<div class="col s3"></div>
-								<div class="col s6">
-									<a href='/sign_in'><button class="button-full"><i class="fa fa-send"></i>Sign in</button></a>
+							<div class="social-login">
+								<div class="row">
+									<div class="col s3"></div>
+									<div class="col s6">
+										<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign in</button>
+									</div>
+									<div class="col s3"></div>
 								</div>
-								<div class="col s3"></div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 							<div class="row">
 								<div class="col s3"></div>
 								<div class="col s6">
-									<a href='/sign_up'><button class="button-full"><i class="fa fa-send"></i>Sign up</button></a>
+									<a href="/sign_up"><button class="button-full"><i class="fa fa-send"></i>Sign up</button></a>
 								</div>
 								<div class="col s3"></div>
 							</div>

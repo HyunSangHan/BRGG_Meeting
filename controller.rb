@@ -26,7 +26,15 @@ get '/' do
     end
 end
 
-get '/sign_in' do
+post '/signin_process' do
+    user = User.find_by_email(params["email"])
+
+    if !user.nil? and BCrypt::Password.new(user.password) != params["password"]
+        session["user_id"] = user.id
+        redirect '/main'
+    else
+        redirect back
+    end
 end
 
 get '/sign_up' do
@@ -67,6 +75,7 @@ get '/matching_result' do
             @my_partner = female_users.where("ranking" => my.ranking).take
         else
             @my_partner = male_users.where("ranking" => my.ranking).take
+        end
     else
         puts "sorry. you are loser!" #need to be editted
     end
@@ -104,22 +113,6 @@ end
 #         user.delete
 #         redirect '/'
 #     end
-# end
-  
-
-# post '/login_process' do
-#     user = User.find_by_email(params["email"])
-
-#     if user.nil?
-#         redirect '/error_2_1'
-#     end
-    
-#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-#         redirect '/error_2_2'
-#     end
-
-#     session["user_id"] = user.id
-#     redirect "/"
 # end
 
 # get '/cash_payment' do 
