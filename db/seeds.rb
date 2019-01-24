@@ -2,8 +2,12 @@
 require 'bcrypt'
 require './db_class.rb'
 
-meeting_detail = MeetingDetail.create("starting_date"=>DateTime.new(2019,1,24,10), "mid_date"=>DateTime.new(2019,1,25,10), "meeting_date"=>DateTime.new(2019,1,25,22), \
-"location"=>"Gangnam", "cutline"=>"0")
+meeting_detail = MeetingDetail.create(
+    "starting_date"=>DateTime.new(2019,1,24,10),
+    "mid_date"=>DateTime.new(2019,1,25,10),
+    "meeting_date"=>DateTime.new(2019,1,25,22),
+    "location"=>"Gangnam",
+    "cutline"=>"0") #will be editted
 
 for i in 1..20 #for men
     j = i % 4 + 1
