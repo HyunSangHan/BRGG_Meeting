@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
-# require './function.rb'
+require './function.rb'
 enable :sessions
 
 ###################################################################################################
@@ -43,13 +43,35 @@ get '/main' do
     # else
      erb :main
     # end
-end
+end    ##################### need to add get_ranking_result function with "if" about DateTime
   
 get '/matching_result' do
     # if session["user_id"].nil?
     #     redirect '/'
     # else
-     erb :matching_result
+    user = check_session
+    meeting = get_meeting_info
+
+    my = JoinedUser.where("user_id" => user.id)
+                    .where("meeting_detail_id" => meeting.id).take
+
+    all_users = meeting.joined_users
+    male_users = all_users.where(:is_male => true).take
+    female_users = all_users.where(:is_male => false).take
+
+    get_ranking_result
+
+    #if ########### have to edit about 'last' meeting, and run this 'if' meeting was finished only 
+    if meeting.cutline >= my.ranking
+        if my.is_male?
+            @my_partner = female_users.where("ranking" => my.ranking).take
+        else
+            @my_partner = male_users.where("ranking" => my.ranking).take
+    else
+        puts "sorry. you are loser!" #need to be editted
+    end
+
+    erb :matching_result #need to add my_partner
     # end
 end
 
