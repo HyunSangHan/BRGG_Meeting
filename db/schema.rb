@@ -14,12 +14,11 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
 
   create_table "cash_payments", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "cash"
-    t.integer "heart"
+    t.integer "cash_paid"
+    t.integer "heart_gotten"
     t.string "device_platform"
     t.string "iap_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "updated_at"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -30,8 +29,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
   create_table "heart_payments", force: :cascade do |t|
     t.integer "user_id"
     t.integer "heart_paid"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "updated_at"
   end
 
   create_table "joined_users", force: :cascade do |t|
@@ -41,15 +39,13 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.integer "ranking"
     t.integer "midranking"
     t.boolean "is_deleted"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
   end
 
   create_table "matched_histories", force: :cascade do |t|
     t.integer "user_female_id"
     t.integer "user_male_id"
     t.integer "meeting_detail_id"
-    t.string "location"
   end
 
   create_table "meeting_details", force: :cascade do |t|
@@ -64,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.integer "company_id"
     t.integer "current_heart"
     t.string "nickname"
+    t.string "password"
     t.string "email"
     t.string "phone_number"
     t.string "location"
@@ -71,8 +68,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.string "recommendation_code"
     t.text "team_detail"
     t.boolean "is_male"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
   end
 
 end
