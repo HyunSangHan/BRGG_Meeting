@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'bcrypt'
 require './db_class.rb'
-# require './seeds.rb'
 enable :sessions
 
 ###################################################################################################
@@ -24,7 +23,7 @@ HEART_TO_SCORE = 1000
 COUNT_LIMIT = 9999
 private
 def check_session 
-    User.find(session["user_id"])
+    return User.find(session["user_id"])
 end
 
 def get_meeting_info

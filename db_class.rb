@@ -1,5 +1,6 @@
 require 'sinatra/activerecord'
 #require 'bcrypt'
+enable :sessions
 
 class Company < ActiveRecord::Base
 	has_many :users

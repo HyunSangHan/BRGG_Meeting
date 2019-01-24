@@ -2,7 +2,7 @@
 # require 'bcrypt'
 # require './db_class.rb'
 
-# meeting_detail = Meeting_detail.create("starting_date"=>TDataTime.new(2019,1,2,4,5,6), "mid_date"=>DataTime.new(2019,1,3,4,5,6), "meeting_date"=>DataTime.new(2019,1,25,4,5,6), \
+# meeting_detail = MeetingDetail.create("starting_date"=>DateTime.new(2019,1,24,10), "mid_date"=>DateTime.new(2019,1,25,10), "meeting_date"=>DateTime.new(2019,1,25,22), \
 # "location"=>"Gangnam", "cutline"=>"0")
 # # I don't know exactly.... about datetime....
 
@@ -15,7 +15,7 @@
 #     a=Company.find_by_id(i)
 
 #     user = User.create("company_id" => a.id, "current_heart" => i, "nickname"=>"user#{i}", "email"=>"#{i}@#{i}mail.com", \
-#     "password"=>"abc#{i}#{i}#{i}#{i}", "phone_number"=>"#{i}#{i}#{i}-#{i}#{i}#{i}#{i}-#{i}#{i}#{i}#{i}", \
+#     "password"=>BCrypt::Password.create("abc#{i}#{i}#{i}#{i}"), "phone_number"=>"#{i}#{i}#{i}-#{i}#{i}#{i}#{i}-#{i}#{i}#{i}#{i}", \
 #     "location"=>"Gangnam", "profile_img"=>"/public/images/guest#{j}", "recommendation_code"=>"abcd#{i}#{i}",\
 #     "team_detail"=>"Hi Nice to meet you", "is_male"=>true, "created_at"=>Time.now())
 #     user.password = BCrypt::Password.create(user.password)
