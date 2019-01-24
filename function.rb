@@ -88,8 +88,8 @@ def assign_first_score # MUST check if all cases are included
     end
 end
 
-def get_ranking_result
-    meeting =  get_meeting_info
+def make_ranking_result
+    meeting =  get_meeting_info #have to edit! (have to get last meeting)
     all_users = meeting.joined_users
     male_users = all_users.where(:is_male => true)
     female_users = all_users.where(:is_male => false)
