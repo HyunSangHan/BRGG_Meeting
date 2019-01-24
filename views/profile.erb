@@ -17,15 +17,13 @@
 							<input type="file">
 						</div>
 					</div>
-					<input type="text" value="@user.email">
-					<input type="text" value="암호">
-					<input type="text" value="암호확인">
-					<input type="text" value="이름">
-					<input type="text" value="회사">
-					<input type="text" value="지역">
-					<input type="text" value="보유 하트">
-					<input type="text" value="추천인 코드">
-					<textarea cols="30" rows="10">미팅 그룹 소개</textarea>
+					<input type="text" value="<%= @user.email %>">
+					<input type="text" value="<%= @user.password %>">
+					<input type="text" value="<%= @user.password %>">
+					<input type="text" value="<%= @user.nickname %>">
+					<input type="text" value="<%= @user.company_id %>">
+					<input type="text" value="<%= @user.location %>">
+					<textarea cols="30" rows="10"><%= @user.team_detail %></textarea>
 					<button class="button">저장하기</button>
 				</form>
 			</div>
