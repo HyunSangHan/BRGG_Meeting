@@ -53,8 +53,14 @@ post '/logout' do
     redirect '/'
 end
 
-#post '/profile' do
-    #end
+get '/profile' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
+    @user = User.find(session["user_id"])
+    erb :profile
+    end
+end
     
 
 post '/buy_heart' do
