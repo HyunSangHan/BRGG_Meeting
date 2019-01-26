@@ -19,13 +19,13 @@ MeetingDetail.create( #2
 for i in 1..20 #for men
     j = i % 4 + 1
 
-    company = Company.create(
+    Company.create(
         "name"=>"BRGG#{j}",
         "domain"=>"@#{j}mail.com")
 
-    a=Company.find_by_id(i)
+    a = Company.find_by_id(i)
 
-    user = User.create(
+    User.create(
         "company_id" => a.id,
         "current_heart" => i,
         "nickname"=>"user#{i}",
@@ -39,9 +39,9 @@ for i in 1..20 #for men
         "is_male"=>true,
         "created_at"=>Time.now())
 
-    b=User.find_by_id(i)
+    b = User.find_by_id(i)
 
-    joined_user = JoinedUser.create(
+    JoinedUser.create(
         "user_id"=>b.id,
         "is_male"=>b.is_male,
         "meeting_detail_id"=>1,
@@ -55,13 +55,13 @@ end
 for i in 21..30 #for women
     j = i % 4 + 1
 
-    company = Company.create(
+    Company.create(
         "name"=>"BRGG#{j}",
         "domain"=>"@#{j}mail.com")
 
-    a=Company.find_by_id(i)
+    a = Company.find_by_id(i)
 
-    user = User.create(
+    User.create(
         "company_id" => a.id,
         "current_heart" => i,
         "nickname"=>"user#{i}",
@@ -77,7 +77,7 @@ for i in 21..30 #for women
 
     b = User.find_by_id(i)
 
-    joined_user = JoinedUser.create(
+    JoinedUser.create(
         "user_id"=>b.id,
         "is_male"=>b.is_male,
         "meeting_detail_id"=>1,
