@@ -44,7 +44,11 @@ post '/signup_process' do
         user = User.new
         user.email = params["email"]
         user.password = BCrypt::Password.create(params["password"])
-        user.is_male = true
+        if params["gender"] == "M"
+            user.is_male = true
+        else
+            user.is_male = false
+        end
         user.save
 
         session["user_id"] = user.id
