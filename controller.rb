@@ -29,7 +29,7 @@ end
 post '/signin_process' do
     user = User.find_by_email(params["email"])
 
-    if !user.nil? #and BCrypt::Password.new(user.password) != params["password"]
+    if !user.nil? and BCrypt::Password.new(user.password) == params["password"]
         session["user_id"] = user.id
         redirect '/main'
     else
@@ -37,10 +37,25 @@ post '/signin_process' do
     end
 end
 
-get '/sign_up' do
+post '/signup_process' do
+    if params["password"] != params["retype_password"]
+        redirect back
+    else
+        user = User.new
+        user.email = params["email"]
+        user.password = BCrypt::Password.create(params["password"])
+        user.save
+
+        session["user_id"] = user.id
+        redirect '/'
+    end 
 end
 
-post '/sign_out' do
+get '/sign_up' do
+    erb :sign_up
+end
+
+get '/sign_out' do
     session.clear
     redirect '/'
 end

@@ -1,0 +1,27 @@
+<%= erb :"/layouts/header" %>
+<!-- TODO AFTER DEVELOP DONE => no_user_header -->
+
+<body>
+	<!-- sign up -->
+	<div class="sign-up segments-page">
+		<div class="container">
+			<div class="signup-contents">
+				<div class="pages-title">
+					<h3>Sign Up</h3>
+					<div class="line"></div>
+				</div>
+				<form action="/signup_process" method="post">
+					<input type="email" name="email" placeholder="Email">
+					<input type="password" name="password" placeholder="Password">
+					<input type="password" name="retype_password" placeholder="Retype Password">
+					<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign Up</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- end sign up -->
+
+
+</body>
+
+<%= erb :"/layouts/footer" %>
