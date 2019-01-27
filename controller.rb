@@ -69,6 +69,7 @@ get '/main' do
     # if session["user_id"].nil?
     #     redirect '/'
     # else
+    @user = User.find(session["user_id"])
      erb :main
     # end
 end    ##################### need to add get_ranking_result function with "if" about DateTime
