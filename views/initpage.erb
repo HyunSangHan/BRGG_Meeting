@@ -1,5 +1,4 @@
-<%= erb :"/layouts/header" %>
-<!-- TODO AFTER DEVELOP DONE => no_user_header -->
+<%= erb :"/layouts/no_user_header" %>
 
 <body>
 	<!-- about -->
@@ -17,8 +16,8 @@
 							<div class="col s3"></div>
 							<div class="col s6">
 								<form action="/signin_process" method="post">
-									<input type="email" placeholder="Email">
-									<input type="password" placeholder="password">
+									<input type="email" name="email" placeholder="Email">
+									<input type="password" name="password" placeholder="password">
 									<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign in</button>
 								</form>
 							</div>

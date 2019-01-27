@@ -27,7 +27,7 @@ get '/' do
 end
 
 post '/signin_process' do
-    user = User.find_by_email(params["email"])
+    user = User.where("email" => params["email"]).first
 
     if !user.nil? and BCrypt::Password.new(user.password) == params["password"]
         session["user_id"] = user.id
@@ -44,6 +44,7 @@ post '/signup_process' do
         user = User.new
         user.email = params["email"]
         user.password = BCrypt::Password.create(params["password"])
+        user.is_male = true
         user.save
 
         session["user_id"] = user.id
