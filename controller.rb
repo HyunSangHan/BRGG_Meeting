@@ -44,15 +44,15 @@ post '/signup_process' do
         user = User.new
         user.email = params["email"]
         user.password = BCrypt::Password.create(params["password"])
-        if params["gender"] == "M"
-            user.is_male = true
-        else
+        if params["gender"] == "F"
             user.is_male = false
+        else
+            user.is_male = true
         end
         user.save
 
         session["user_id"] = user.id
-        redirect '/'
+        redirect '/profile'
     end 
 end
 
@@ -120,7 +120,13 @@ get '/profile' do
     end
 end
     
-post '/buy_heart' do
+get '/buy_heart' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
+        @user = User.find(session["user_id"])
+        erb :buy_heart
+    end
 end
 
 post '/chats' do
