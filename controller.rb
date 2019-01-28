@@ -129,7 +129,13 @@ get '/buy_heart' do
     end
 end
 
-post '/chats' do
+get '/chats' do
+    if session["user_id"].nil?
+        redirect '/'
+    else
+        @user = User.find(session["user_id"])
+        erb :chats
+    end
 end
 
 # post '/secession' do
