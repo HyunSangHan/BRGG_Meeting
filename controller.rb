@@ -138,6 +138,8 @@ get '/chats' do
     end
 end
 
+
+
 get '/jj_make_new_meeting' do # TODO : have to merge to main ( hide url or make function )
     if session["user_id"].nil?
         redirect '/'
