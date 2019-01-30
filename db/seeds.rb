@@ -47,6 +47,7 @@ for i in 1..20 #for men
         "total_score"=>0,
         "ranking"=>i,
         "midranking"=>i,
+        "is_male"=>b.is_male,
         "is_deleted"=>false,
         "created_at"=>Time.now())
 end
@@ -82,6 +83,7 @@ for i in 21..30 #for women
         "total_score"=>0,
         "ranking"=>i,
         "midranking"=>i,
+        "is_male"=>b.is_male,
         "is_deleted"=>false,
         "created_at"=>Time.now())
 end

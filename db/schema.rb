@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_105522) do
     t.integer "total_score"
     t.integer "ranking"
     t.integer "midranking"
+    t.boolean "is_male"
     t.boolean "is_deleted"
     t.datetime "created_at"
   end
