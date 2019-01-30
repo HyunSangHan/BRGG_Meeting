@@ -138,15 +138,9 @@ get '/chats' do
     end
 end
 
-# post '/secession' do
-#     check session
-#     if BCrypt::Password.new(user.password) != params["password"] # I don't know it exactly..
-#         redirect '/error_3'
-#     else
-#         user.delete
-#         redirect '/'
-#     end
-# end
+get '/jj_testing_make_new_meeting' do
+    
+end 
 
 # get '/cash_payment' do 
 #     check session

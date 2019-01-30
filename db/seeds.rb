@@ -43,7 +43,6 @@ for i in 1..20 #for men
 
     JoinedUser.create(
         "user_id"=>b.id,
-        "is_male"=>b.is_male,
         "meeting_detail_id"=>1,
         "total_score"=>0,
         "ranking"=>i,
@@ -79,7 +78,6 @@ for i in 21..30 #for women
 
     JoinedUser.create(
         "user_id"=>b.id,
-        "is_male"=>b.is_male,
         "meeting_detail_id"=>1,
         "total_score"=>0,
         "ranking"=>i,
