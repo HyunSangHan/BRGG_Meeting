@@ -1,0 +1,24 @@
+<%= erb :"/layouts/header" %>
+
+<body>
+	<div class="slide">
+		<div class="slide-show owl-carousel owl-theme">
+			<div class="slide-content">
+				<div class="mask"></div>
+				<!-- <img src="images/slider1.jpg" alt=""> -->
+				<div class="caption text-center">
+					<p><%= @meeting.starting_date %></p>
+					<p><%= @meeting.mid_date %></p>
+					<p><%= @meeting.meeting_date %></p>
+					<p><%= @meeting.location %></p>
+					<p><%= @meeting.cutline %></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end slide -->
+
+</body>
+
+
+<%= erb :"/layouts/footer" %>					

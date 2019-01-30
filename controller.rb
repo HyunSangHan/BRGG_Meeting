@@ -138,9 +138,43 @@ get '/chats' do
     end
 end
 
-get '/jj_testing_make_new_meeting' do
-    
+get '/jj_make_new_meeting' do # TODO : have to merge to main ( hide url or make function )
+    if session["user_id"].nil?
+        redirect '/'
+    else
+        newMeeting = MeetingDetail.new
+        newMeeting.starting_date = DateTime.new(2019,2,1,10)
+        newMeeting.mid_date = newMeeting.starting_date + 1.days
+        newMeeting.meeting_date = newMeeting.starting_date + 2.days
+        newMeeting.location = "Gangnam"
+        newMeeting.cutline = 0
+        newMeeting.save
+
+        @user = User.find(session["user_id"])
+        @meeting = MeetingDetail.where("starting_date" => newMeeting.starting_date).first
+        erb :meeting_test
+    end
 end 
+
+get '/jj_make_new_joined_user' do # TODO : a href tag in main page
+    if session["user_id"].nil?
+        redirect '/'
+    elsif MeetingDetail.nil? # have to add date condition
+        redirect '/' # error -> there is no meeting.
+    else
+        newJoinedUser = JoinedUser.new
+        newJoinedUser.user_id = User.find(session["user_id"])
+        newJoinedUser.meeting_detail_id = MeetingDetail.where("starting_date" => DateTime.new(2019,2,1,10)).first
+        newJoinedUser.total_score = 0
+        newJoinedUser.ranking = 0
+        newJoinedUser.midranking = 0
+        newJoinedUser.save
+
+        @user = User.find(session["user_id"])
+        @joined_user = JoinedUser.where("user_id" => newJoinedUser.user_id).first
+        erb :joineduser_test # TODO : have to find how to access user or meeting detail via joined user
+    end
+end
 
 # get '/cash_payment' do 
 #     check session
