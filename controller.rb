@@ -78,17 +78,17 @@ get '/matching_result' do
     # if session["user_id"].nil?
     #     redirect '/'
     # else
-    user = check_session
+    @user = User.find(session["user_id"])
     meeting = get_meeting_info
 
-    my = JoinedUser.where("user_id" => user.id)
+    my = JoinedUser.where("user_id" => @user.id)
                     .where("meeting_detail_id" => meeting.id).take
 
     all_users = meeting.joined_users
     male_users = all_users.where(:is_male => true).take
     female_users = all_users.where(:is_male => false).take
 
-    get_ranking_result
+    make_ranking_result
 
     #if ########### have to edit about 'last' meeting, and run this 'if' meeting was finished only 
     if meeting.cutline >= my.ranking
@@ -98,7 +98,7 @@ get '/matching_result' do
             @my_partner = male_users.where("ranking" => my.ranking).take
         end
     else
-        puts "sorry. you are loser!" #need to be editted
+        puts "sorry. you are loser!" #need to be edited
     end
 
     erb :matching_result #need to add my_partner
