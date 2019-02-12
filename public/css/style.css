@@ -41,17 +41,12 @@ page not found
 footer
 */
 
+
+/*added*/
+
+
 /*font*/
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Roboto:400,500,700,900');
-
-
-
-/*HHS*/
-.big-button {	
-padding: 300px !important;
-}
-
-
 
 /*general*/
 body {
@@ -473,13 +468,14 @@ a.link-color:hover {
 }
 
 /*couple*/
-.couple .contents img {
-	width: 100%;
-}
-
 .couple .contents {
 	text-align: center;
 }
+
+/* Need to Edit: just for main, matching_result (max width)
+.couple .contents img { 
+	width: 100%;
+} */
 
 .couple .contents h4 {
 	font-size: 16px;
