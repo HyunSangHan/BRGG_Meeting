@@ -120,6 +120,19 @@ get '/profile' do
     end
 end
     
+post '/edit_profile' do 
+    user = User.find(session["user_id"])
+    user.email = params["email"]
+    user.password = params["password"] #need to logic for check password
+    user.nickname = params["nickname"]
+    user.company.name = params["company_name"]
+    user.location = params["location"]
+    # user.team_datail = params["team_detail"] #need to edit
+    user.save #need company.save?
+
+    redirect '/profile'
+  end  
+
 get '/buy_heart' do
     if session["user_id"].nil?
         redirect '/'

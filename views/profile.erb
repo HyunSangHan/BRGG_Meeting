@@ -9,22 +9,24 @@
 					<h3>MY PROFILE</h3>
 					<div class="line"></div>
 				</div>
-				<form>
+				<form action="/edit_profile" method="post">
 					<div class="profile-banner">
 						<span>Photo</span>
 						<div class="contents">
-							<img src="images/bg-banner.jpg" alt="">
+							<img src="images/heart.png" alt="">
 							<input type="file">
 						</div>
 					</div>
-					<input type="text" value="<%= @user.email %>">
-					<input type="text" value="<%= @user.password %>">
-					<input type="text" value="<%= @user.password %>">
-					<input type="text" value="<%= @user.nickname %>">
-					<input type="text" value="<%= @user.company_id %>">
-					<input type="text" value="<%= @user.location %>">
+					<input type="text" name="email" value="<%= @user.email %>">
+					<input type="text" name="password"  value="<%= @user.password %>">
+					<input type="text" name="password_confirm" value="<%= @user.password %>">
+					<input type="text" name="nickname" value="<%= @user.nickname %>">
+					<input type="text" name="company" value="<%= @user.company.name %>">
+					<input type="text" name="location" value="<%= @user.location %>">
 					<textarea cols="30" rows="10"><%= @user.team_detail %></textarea>
-					<button class="button">저장하기</button>
+					<button>
+						<input class="button" type="submit" value="저장하기">
+					</button>
 				</form>
 			</div>
 		</div>
