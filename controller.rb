@@ -51,35 +51,20 @@ post '/signup_process' do
         else
             user.is_male = true
         end
-        user.save
-
-        session["user_id"] = user.id
-        redirect '/sign_up_next'
-    end 
-end
-
-post '/signup_process_2' do
-    if !session["user_id"].nil?
-        redirect back
-    else
-        @user = User.find(session["user_id"])
 
         user.profile_img = params["profile_img"]
         user.location = params["location"]
-        user.team_datail = params["team_datail"]
+        user.team_detail = params["team_detail"]
         user.recommendation_code = params["recommendation_code"]
         user.save
 
-        redirect '/main'
+        session["user_id"] = user.id
+        redirect '/'
     end 
 end
 
 get '/sign_up' do
     erb :sign_up
-end
-
-get '/sign_up_next' do
-    erb :sign_up_2
 end
 
 get '/sign_out' do
