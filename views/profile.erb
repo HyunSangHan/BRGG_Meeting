@@ -9,24 +9,30 @@
 					<h3>MY PROFILE</h3>
 					<div class="line"></div>
 				</div>
-				<form action="/edit_profile" method="post">
-					<div class="profile-banner">
-						<span>Photo</span>
-						<div class="contents">
-							<img src="images/heart.png" alt="">
-							<input type="file">
-						</div>
+				<div class="row">
+					<div class="col s1"></div>
+					<div class="col s10">
+						<form action="/edit_profile" method="post">
+							<div class="profile-banner">
+								<span>Photo</span>
+								<div class="contents">
+									<img src="images/heart.png" alt="">
+									<input type="file">
+								</div>
+							</div>
+							<%= @user.email %>
+							<br>
+							<br>비밀번호<input type="text" name="password">
+							비밀번호 확인<input type="text" name="password_confirm">
+							닉네임<input type="text" name="nickname" value="<%= @user.nickname %>">
+							지역<input type="text" name="location" value="<%= @user.location %>">
+							팀 한 줄 소개<input type="text" name="team_detail" value="<%= @user.team_detail %>">
+							
+								<input class="button" type="submit" value="저장하기">
+						</form>
 					</div>
-					<%= @user.email %>
-					<br>
-					<br>비밀번호<input type="text" name="password">
-					비밀번호 확인<input type="text" name="password_confirm">
-					닉네임<input type="text" name="nickname" value="<%= @user.nickname %>">
-					지역<input type="text" name="location" value="<%= @user.location %>">
-					팀 한 줄 소개<input type="text" name="team_detail" value="<%= @user.team_detail %>">
-					
-						<input class="button" type="submit" value="저장하기">
-				</form>
+					<div class="col s1"></div>
+				</div>
 			</div>
 		</div>
 	</div>
