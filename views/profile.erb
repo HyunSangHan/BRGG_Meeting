@@ -22,13 +22,11 @@
 					비밀번호<input type="text" name="password"  value="<%= @user.password %>">
 					비밀번호 확인<input type="text" name="password_confirm" value="<%= @user.password %>">
 					닉네임<input type="text" name="nickname" value="<%= @user.nickname %>">
-					회사 이름<input type="text" name="company" value="<%= @user.company.name %>">
+					회사 이름<input type="text" name="company_name" value="<%= @user.company.name %>">
 					지역<input type="text" name="location" value="<%= @user.location %>">
 					팀 소개<textarea cols="30" rows="10"><%= @user.team_detail %></textarea>
 					</div>
-					<button>
-						<input class="button" type="submit" value="저장하기">
-					</button>
+					<input class="button" type="submit" value="저장하기">
 				</form>
 			</div>
 		</div>

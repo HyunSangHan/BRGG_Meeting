@@ -73,12 +73,12 @@ get '/sign_out' do
 end
 
 get '/main' do
-    # if session["user_id"].nil?
-    #     redirect '/'
-    # else
+    if session["user_id"].nil?
+        redirect '/'
+    else
     @user = User.find(session["user_id"])
      erb :main
-    # end
+    end
 end    ##################### need to add get_ranking_result function with "if" about DateTime
   
 get '/matching_result' do
@@ -88,7 +88,7 @@ get '/matching_result' do
     @user = User.find(session["user_id"])
     meeting = get_meeting_info
 
-    my = JoinedUser.where("user_id" => @user.id)
+    my = JoinedUser.where("user_id" => user.id)
                     .where("meeting_detail_id" => meeting.id).take
 
     all_users = meeting.joined_users
@@ -100,9 +100,9 @@ get '/matching_result' do
     #if ########### have to edit about 'last' meeting, and run this 'if' meeting was finished only 
     if meeting.cutline >= my.ranking
         if my.is_male?
-            @my_partner = female_users.where("ranking" => my.ranking).take
+            my_partner = female_users.where("ranking" => my.ranking).take
         else
-            @my_partner = male_users.where("ranking" => my.ranking).take
+            my_partner = male_users.where("ranking" => my.ranking).take
         end
     else
         puts "sorry. you are loser!" #need to be edited
@@ -134,7 +134,7 @@ post '/edit_profile' do
     user.nickname = params["nickname"]
     user.company.name = params["company_name"]
     user.location = params["location"]
-    # user.team_datail = params["team_detail"] #need to edit
+    # user.team_detail = params["team_detail"] #need to edit
     user.save #need company.save?
 
     redirect '/profile'
