@@ -1,0 +1,35 @@
+<%= erb :"/layouts/no_user_header" %>
+
+<body>
+	<!-- sign up 2 -->
+	<div class="segments-page">
+		<div class="container">
+			<div class="settings">
+				<div class="pages-title">
+					<h3>주선자 프로필 사진등록</h3>
+					<div class="line"></div>
+				</div>
+				<form action="/signup_process_2" method="post">
+					<div style="text-align:center" class="profile-photo">
+						<span>프로필 사진등록</span>
+						<div style="text-align:center" class="contents">
+							<img src="images/profile1.png" alt="">
+							<input type="file" name="profile_img" style="float: inherit;position:relative;left: 37%;">
+						</div>
+					</div>
+						<div class="pages-title">
+						<h3>미팅그룹 등록</h3>
+						<div class="line"></div>
+					</div>
+					<input type="text" name="location" placeholder="선호지역">
+					<textarea cols="30" rows="10" name="teamdetail">간단한 그룹소개</textarea>
+					<input type="text" name="recommendationcode" placeholder="추천인코드">
+					<button class="button-full" type="submit"><i class="fa fa-send"></i>등록완료</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- end sign up 2 -->
+</body>
+
+<%= erb :"/layouts/footer" %>

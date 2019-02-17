@@ -42,8 +42,10 @@ post '/signup_process' do
         redirect back
     else
         user = User.new
+        user.nickname = params["nickname"]
         user.email = params["email"]
         user.password = BCrypt::Password.create(params["password"])
+        user.phone_number = params["phone_number"]
         if params["gender"] == "F"
             user.is_male = false
         else
@@ -52,12 +54,32 @@ post '/signup_process' do
         user.save
 
         session["user_id"] = user.id
-        redirect '/profile'
+        redirect '/sign_up_next'
+    end 
+end
+
+post '/signup_process_2' do
+    if !session["user_id"].nil?
+        redirect back
+    else
+        @user = User.find(session["user_id"])
+
+        user.profile_img = params["profile_img"]
+        user.location = params["location"]
+        user.team_datail = params["team_datail"]
+        user.recommendation_code = params["recommendation_code"]
+        user.save
+
+        redirect '/main'
     end 
 end
 
 get '/sign_up' do
     erb :sign_up
+end
+
+get '/sign_up_next' do
+    erb :sign_up_2
 end
 
 get '/sign_out' do

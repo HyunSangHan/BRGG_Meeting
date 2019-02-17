@@ -6,16 +6,30 @@
 		<div class="container">
 			<div class="signup-contents">
 				<div class="pages-title">
-					<h3>Sign Up</h3>
+					<h3>회원가입</h3>
 					<div class="line"></div>
 				</div>
 				<form action="/signup_process" method="post">
-					<input type="email" name="email" placeholder="Email">
-					<input type="password" name="password" placeholder="Password">
-					<input type="password" name="retype_password" placeholder="Retype Password">
+					<input type="text" name="nickname" placeholder="닉네임">
+					<input type="email" name="email" placeholder="이메일">
+					<input type="password" name="password" placeholder="비밀번호">
+					<input type="password" name="retype_password" placeholder="비밀번호 확인">
+					<input type="text" name="phone_number" placeholder="폰 번호">
 					<input type="text" name="gender" placeholder="Gender type M or F only">
-					<button class="button-full" type="submit"><i class="fa fa-send"></i>Sign Up</button>
+					<button class="button-full" type="submit"><i class="fa fa-send"></i>다음페이지</button>
 				</form>
+				<div class="social-login">
+					<h5>- 또는 -</h5>
+					<div class="row">
+						<div class="col s6">
+							<button class="button-full button-facebook">페이스북으로 가입하기</button>
+						</div>
+						<div class="col s6">
+							<button class="button-full button-twitter">카카오톡으로 가입하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			</div>
 		</div>
 	</div>
