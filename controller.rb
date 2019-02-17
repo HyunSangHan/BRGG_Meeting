@@ -132,9 +132,10 @@ post '/edit_profile' do
     user.email = params["email"]
     user.password = params["password"] #need to logic for check password
     user.nickname = params["nickname"]
-    user.company.name = params["company_name"]
     user.location = params["location"]
-    # user.team_detail = params["team_detail"] #need to edit
+    user.phone_number = params["phone_number"]
+    user.team_detail = params["team_detail"]
+    # user.team_datail = params["team_detail"] #need to edit
     user.save #need company.save?
 
     redirect '/profile'
