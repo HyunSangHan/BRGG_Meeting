@@ -19,11 +19,12 @@
 					</div>
 					<%= @user.email %>
 					<br>
-					<br>비밀번호<input type="text" name="password"  value="<%= @user.password %>">
-					비밀번호 확인<input type="text" name="password_confirm" value="<%= @user.password %>">
+					<br>비밀번호<input type="text" name="password">
+					비밀번호 확인<input type="text" name="password_confirm">
 					닉네임<input type="text" name="nickname" value="<%= @user.nickname %>">
 					지역<input type="text" name="location" value="<%= @user.location %>">
-					팀 소개<textarea cols="30" rows="10"><%= @user.team_detail %></textarea>
+					팀 한 줄 소개<input type="text" name="team_detail" value="<%= @user.team_detail %>">
+					
 						<input class="button" type="submit" value="저장하기">
 				</form>
 			</div>
